@@ -1,0 +1,15 @@
+.input-group__input-wrap input {
+  padding: 10px 0 10px 17px;
+  overflow: hidden;
+  border-radius: var(--border);
+  outline: none;
+}
+
+.input-group__input-wrap input::placeholder {
+  font-size: 1.5rem;
+}
+
+.input-group__label {
+  display: block;
+  padding-bottom: 12.5px;
+}
