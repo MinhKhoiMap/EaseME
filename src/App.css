@@ -12,3 +12,14 @@ input::placeholder {
 html {
   font-size: 62.5%;
 }
+
+@keyframes fadeSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: unset;
+  }
+}

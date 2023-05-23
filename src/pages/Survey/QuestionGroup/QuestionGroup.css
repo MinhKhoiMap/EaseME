@@ -1,0 +1,40 @@
+.question-group__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.question-group__label {
+  font-family: "iCiel Supa Mega Fantastic";
+  font-weight: 400;
+  font-size: 11rem;
+  line-height: 119px;
+  color: #87a173;
+  animation: fadeSlideUp 1.6s ease forwards;
+}
+
+.question-group__answers-section {
+  margin-top: calc(-24px + 60px);
+  margin-bottom: -24px;
+}
+
+.question-group__answers-section .question-group__answer-btn {
+  margin: 24px 0;
+}
+
+.question-group__answers-section .question-group__answer-btn .btn {
+  border-style: solid;
+  border-color: #ff8080;
+  background-color: transparent;
+  color: #ff8080;
+  font-weight: 500;
+  line-height: 30px;
+  transition: all 0.25s ease;
+  opacity: 0;
+  animation: fadeSlideUp 1s ease var(--delay) forwards;
+}
+
+.question-group__answers-section .question-group__answer-btn:hover .btn {
+  color: #fff;
+  background-color: #ff8080;
+}

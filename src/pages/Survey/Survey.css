@@ -1,0 +1,7 @@
+.survey-test__wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff2ee;
+}
