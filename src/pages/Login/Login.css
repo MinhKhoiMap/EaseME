@@ -27,6 +27,7 @@
 }
 
 .login-page__login-feature {
+  --height-input-login: 56px;
   margin-top: 19.5px;
 }
 
@@ -42,7 +43,7 @@
 
 .login-page__login-feature input {
   width: 343px;
-  height: 56px;
+  height: var(--height-input-login);
   font-size: 1.6rem;
   background: linear-gradient(
     101.46deg,
@@ -51,6 +52,7 @@
   );
   box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.15);
   border: 2px solid #87a273;
+  color: #87a173;
 }
 
 .login-page__login-feature input::placeholder {
@@ -60,7 +62,7 @@
 }
 
 .login-page__forget-password {
-  display: block;
+  display: inline-block;
   margin-top: 14px;
   font-weight: 400;
   font-size: 1.4rem;
@@ -120,9 +122,9 @@
 }
 
 .login-page__options-btn {
-  margin: 21px 0 36px;
+  margin: 21px 8px 36px;
   display: inline-block;
-  padding: 19px 12.73px 18.28px 12px;
+  padding: 19px 12.73px 15.28px 12px;
   background: linear-gradient(
     101.46deg,
     rgba(255, 255, 255, 0.7) 18.95%,
@@ -145,4 +147,17 @@
   display: inline-block;
   margin-left: 4px;
   color: #bc2525;
+}
+
+.login-page__login-feature.login-page__login-feature--password {
+  position: relative;
+}
+
+.login-page__login-feature.login-page__login-feature--password
+  .login-page__show-password {
+  position: absolute;
+  bottom: calc(var(--height-input-login) / 2);
+  transform: translateY(calc(50% + 2px));
+  right: 15px;
+  cursor: pointer;
 }

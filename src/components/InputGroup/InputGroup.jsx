@@ -1,4 +1,5 @@
 import "./InputGroup.css";
+
 const InputGroup = ({
   text,
   placeholderText = "Nhập ở đây...",
@@ -6,7 +7,13 @@ const InputGroup = ({
   target,
   type = "text",
   borderRadius = 0,
+  value,
+  setValue,
 }) => {
+  const handleChangeValue = (e) => {
+    setValue(e.target.value);
+  };
+
   return (
     <div className="input-group__wrapper">
       <label className="input-group__label" for={target}>
@@ -22,6 +29,8 @@ const InputGroup = ({
           required={required}
           type={type}
           placeholder={placeholderText}
+          value={value}
+          onChange={handleChangeValue}
         />
       </div>
     </div>
