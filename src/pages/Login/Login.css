@@ -161,3 +161,7 @@
   right: 15px;
   cursor: pointer;
 }
+
+.login-page__options-btn:hover {
+  background-color: #87a273;
+}

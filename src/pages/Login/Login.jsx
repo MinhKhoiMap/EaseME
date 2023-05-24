@@ -18,6 +18,7 @@ const Login = () => {
 
   //
   const [showPassword, setShowPassword] = useState(false);
+  const [googleHoverColor, setGoogleHoverColor] = useState("#87A273");
 
   return (
     <div
@@ -77,6 +78,8 @@ const Login = () => {
             <a
               href="https://www.facebook.com/khoimapp/"
               className="login-page__options-btn"
+              onMouseEnter={() => setGoogleHoverColor("#fff")}
+              onMouseLeave={() => setGoogleHoverColor("#87A273")}
             >
               <svg width="36" height="23" viewBox="0 0 36 23" fill="none">
                 <mask
@@ -91,47 +94,11 @@ const Login = () => {
                   <rect width="35.2727" height="22.718" fill="url(#pattern0)" />
                 </mask>
                 <g mask="url(#mask0_113_284)">
-                  <rect width="35.2727" height="22.718" fill="#87A273" />
-                </g>
-                <defs>
-                  <pattern
-                    id="pattern0"
-                    patternContentUnits="objectBoundingBox"
-                    width="1"
-                    height="1"
-                  >
-                    <use
-                      xlinkHref="#image0_113_284"
-                      transform="scale(0.0169492 0.0263158)"
-                    />
-                  </pattern>
-                  <image
-                    id="image0_113_284"
-                    width="59"
-                    height="38"
-                    xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADsAAAAmCAYAAAB6beP2AAAACXBIWXMAAAsSAAALEgHS3X78AAAC90lEQVRogd2a4XXaMBDHf8fL92SDeoOwQT0CmSB0gtIN6AZ0A2eCpBPUTFBnA7IBLHDXDxYlMbYlGcv09feeHu9hS6c/Okl3EmJmDMXMMiAD8sajHbATkXJw4wmQWLFmtgCO5TagyhYogBcR2cd2cEyCxZrZElgDnwbaOgAbYHMt0V6xZpZTj8xQkU0OwFJEXkZqL5hZ30MzWwO/GE8o1K7/bGabEdsMonNkzawAHhPb/yYik4luFTuR0CcRWSa28YEzNzazFf+hUGiMrJnNgd8R9Q9ACVTuE+p9d069NbXN9asIhXOxFXAfUC9oG3F78oaT6FGFukVu3vh60dknM8PMUNWlqlpAKVX17ljPV1T1TlULVS1C60S0Xbb0L+96/+ad7nXAjxk9Mu5XjqqTihn8dTffXrq91lwbi+NqvPC8d+AfGZ1LCBVbiMgucV+Sc+PSNF/2UoQ0ZmYvwN0F/amAdXM1dfF5G2225h1R4V5UNaeOf7t4E5HM2826U8OT4xM/ReSDp43U7nbGeeLdpBzBUAyXeEYvvVmPY5fKeAfNIGE0QsROTcjpxyBu/K+QpTIewXdq926OesZ5fPAKtIWLFaq68ISHVUT4FhJuesPRCHvrmHBxhn9O3ptZskVjSmYiUlFHSH2sQhqTAKhdso8qxNYQjgtU6XlvNeLoLj3Pk4v1nfTdUuelFxGYcJSX2uliBiAiBX5XfnRnx4NwnlF4XntNGoN7Vra2shmQZGeqWgW0vRw7wX9fmicKu0DBVd8S3xC6UtV9QJu7lELN7OwMagE8RzjGK/V8L4G9iFQuQ7mjjrlD5uiRL246JePs3NjqQ6yvKY22sBWRPLWRrkPyEvic2rjjDZhPcdnVlQgsqK8aU3Og7+hzZFrFisjeudVTQtsHIHcR3CT0pnjuNPEB/x4cyxbIphQKAfmsu0fNgB9cLvoNeBCR/BoX0lF/M3BR0NKVkGsSON0HFde4gH5P9H8qjjjhOaeEOnefO1f2QDm1q/bxBz0fDozgtYUoAAAAAElFTkSuQmCC"
+                  <rect
+                    width="35.2727"
+                    height="22.718"
+                    fill={googleHoverColor}
                   />
-                </defs>
-              </svg>
-            </a>
-            <a
-              href="https://www.facebook.com/khoimapp/"
-              className="login-page__options-btn"
-            >
-              <svg width="36" height="23" viewBox="0 0 36 23" fill="none">
-                <mask
-                  id="mask0_113_284"
-                  style={{ maskType: "alpha" }}
-                  maskUnits="userSpaceOnUse"
-                  x="0"
-                  y="0"
-                  width="36"
-                  height="23"
-                >
-                  <rect width="35.2727" height="22.718" fill="url(#pattern0)" />
-                </mask>
-                <g mask="url(#mask0_113_284)">
-                  <rect width="35.2727" height="22.718" fill="#87A273" />
                 </g>
                 <defs>
                   <pattern
