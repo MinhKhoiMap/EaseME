@@ -1,0 +1,53 @@
+.note__wrapper {
+  width: fit-content;
+  position: relative;
+}
+
+.note__background img {
+  width: 11;
+  height: 110%;
+}
+
+.note__text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 300;
+  font-size: 1.4rem;
+  line-height: 18px;
+  word-break: break-all;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  overflow: hidden;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+.note__wrapper--1 .note__text {
+  width: calc(100% - 14px * 2);
+  rotate: 2deg;
+}
+
+.note__wrapper--2 .note__text {
+  padding-left: 5px;
+  width: calc(100% - 14px - 24px);
+  rotate: 3deg;
+}
+.note__wrapper--3 .note__text {
+  padding: 0 10px;
+  width: calc(100% - 21px * 2);
+  rotate: 9deg;
+}
+.note__wrapper--4 .note__text {
+  padding-left: 10px;
+  width: calc(100% - 24px * 2);
+  rotate: -1deg;
+}
+.note__wrapper--5 .note__text {
+  padding-right: 8px;
+  width: calc(100% - 14px * 2);
+  rotate: 4deg;
+}
