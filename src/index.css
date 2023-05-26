@@ -12,6 +12,18 @@
   font-weight: lighter;
 }
 
+@font-face {
+  font-family: "Fz Beloved Script";
+  src: url(./assets/fonts/Fz-Beloved-Script/Fz\ Beloved\ Script.ttf);
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "Fz-Billie-Endria";
+  src: url(./assets/fonts/Fz-Billie-Endria/Fz-Billie-Endria.ttf);
+  font-weight: normal;
+}
+
 * {
   margin: 0;
   padding: 0;

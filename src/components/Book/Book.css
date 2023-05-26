@@ -1,0 +1,319 @@
+.book {
+  padding: 46px 0;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  background-color: #fff2ee;
+}
+
+.book-section {
+  width: 469px;
+  height: 600px;
+  position: relative;
+  transform: translateX(calc(50% + 50px));
+  transition: transform 0.3s 0.2s;
+}
+
+.book__paper,
+.book-cover__left {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  perspective: 1500px;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.book__paper-back,
+.book__paper-front,
+.book-cover__left-front,
+.book-cover__left-back {
+  border-radius: 10px;
+  padding-right: 5px;
+  font-size: 1.8rem;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: #fff0d0;
+  background-clip: content-box;
+  transform-origin: left;
+  transition: all 0.5s;
+}
+
+.book__paper-front,
+.book-cover__left-front {
+  z-index: 2;
+  backface-visibility: hidden;
+}
+
+.book__paper-back,
+.book-cover__left-back {
+  z-index: 1;
+}
+
+.book__paper .content {
+  width: 100%;
+  height: 100%;
+  padding: 28px 30px 0 40px;
+  /* background-color: powderblue; */
+  background-clip: content-box;
+  font-family: "Fz-Billie-Endria";
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.book__paper .content .content__body {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  /* background-color: palevioletred; */
+  user-select: none;
+}
+
+.book__paper .content .content__footer {
+  user-select: none;
+}
+
+.book__paper .content .content__body p {
+  font-weight: 400;
+  font-size: 2.6rem;
+  line-height: 141.9%;
+  color: #000;
+  text-align: justify;
+}
+
+.book__paper .content .content__footer p {
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 80px;
+  color: #bc2525;
+}
+
+.book__paper-back .content,
+.book-cover__left-back .content {
+  transform: rotateY(180deg);
+}
+
+.flipped .book__paper-front,
+.flipped .book__paper-back,
+.flipped .book-cover__left-front,
+.flipped .book-cover__left-back {
+  transform: rotateY(-180deg) translateX(5px);
+}
+
+.book-cover__right {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  border-radius: 10px;
+  background-image: url(../../assets/images/book/page-bg/page-bold.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.book-cover__right {
+  width: calc(100% + 6px);
+  height: calc(100% + 6px);
+  transform: translate(2px, -6px);
+}
+
+.book-cover__right::before {
+  content: "";
+  width: calc(100% - 6px);
+  height: 100%;
+  border-radius: 10px;
+  position: absolute;
+  top: 2px;
+  right: 6px;
+  background-image: url(../../assets/images/book/page-bg/page.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.book-pin {
+  width: 0;
+  /* background-image: url(../../assets//images/book/pin.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center; */
+  height: calc(100% - 10px);
+  position: absolute;
+  top: 5px;
+  left: 0;
+  z-index: 999;
+  transform: translateX(-50%);
+  transition: width 0.2s ease-out;
+  will-change: width;
+}
+
+.book .prev-btn,
+.book .next-btn {
+  background-color: transparent;
+  color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* .book .prev-btn:hover,
+.book .next-btn:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+} */
+
+.book .prev-btn {
+  position: absolute;
+  z-index: 9999;
+  left: -100%;
+  height: 100%;
+}
+
+.book .next-btn {
+  position: absolute;
+  z-index: 9999;
+  right: 0;
+  height: 100%;
+}
+
+.book .next-btn:hover::before {
+  transform: rotate(270deg);
+  visibility: visible;
+}
+
+.book .next-btn::before {
+  content: "";
+  width: 40px;
+  height: 40px;
+  background-image: url(../../assets/images/book/shrinkver3.png);
+  /* box-shadow: 0 0 20px rgba(0, 0, 0, 0.6); */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: top right;
+  position: absolute;
+  bottom: -4px;
+  right: 0;
+  visibility: hidden;
+  transform-origin: center;
+  transform: rotate(90deg);
+}
+
+.book .prev-btn::before {
+  content: "";
+  width: 40px;
+  height: 40px;
+  background-image: url(../../assets/images/book/shrinkver3.png);
+  /* box-shadow: 0 0 20px rgba(0, 0, 0, 0.6); */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: top right;
+  position: absolute;
+  bottom: -3px;
+  left: -2px;
+  visibility: hidden;
+  transform-origin: center;
+}
+
+.book .prev-btn:hover::before {
+  visibility: visible;
+}
+
+.book-cover__left-front {
+  background-color: #fff;
+  background-image: url(../../assets/images/book/CoverMid.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 0px 8px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.book-cover__left-front .content {
+  padding-left: 30px;
+  width: 100%;
+  text-align: center;
+}
+
+.book-cover__left-front .content .label,
+.book-cover__left-front .content .name {
+  font-family: iCiel Supa Mega Fantastic;
+  font-weight: 400;
+  font-size: 90px;
+  line-height: 77px;
+  color: #87a173;
+  word-break: break-all;
+}
+
+.book-cover__left-front::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  background-image: url(../../assets/images/book/CoverStart.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -2;
+}
+
+.book-cover__left-back .content {
+  margin-right: 45px;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  font-family: Fz Beloved Script;
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 80px;
+  color: #bc2525;
+}
+
+.book__note {
+  padding: 22px 21px;
+  width: 378px;
+  height: 169px;
+  background: linear-gradient(
+    101.46deg,
+    rgba(255, 255, 255, 0.7) 18.95%,
+    rgba(255, 255, 255, 0.4) 74.93%
+  );
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.15);
+  border-radius: 15px;
+  transition: all 0.2s;
+  position: absolute;
+  left: 157px;
+  will-change: visibility;
+}
+
+.book__note .question {
+  margin-bottom: 13px;
+  font-size: 17px;
+  line-height: 22px;
+  color: #87a273;
+}
+
+.book .content p {
+  font-size: 14px;
+  line-height: 18px;
+  color: #000000;
+}
+
+.book .content .answer {
+  margin-bottom: 18px;
+}
+
+.book .content .message {
+  font-weight: bold;
+}
