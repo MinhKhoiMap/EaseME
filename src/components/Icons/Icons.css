@@ -1,0 +1,23 @@
+#heart-icon__wrapper {
+  margin-right: calc(-1 * 10%);
+  width: fit-content;
+  position: relative;
+}
+
+#heart-icon__wrapper .cross-sign {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -40%);
+  z-index: 9;
+}
+
+#heart-icon__wrapper .back .left {
+  transform: rotateY(180deg);
+  margin-right: -2px;
+}
+
+#heart-icon__wrapper .back .left,
+#heart-icon__wrapper .back .right {
+  transition: all 0.2s;
+}

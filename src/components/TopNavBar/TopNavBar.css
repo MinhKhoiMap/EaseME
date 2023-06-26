@@ -1,0 +1,152 @@
+.top-nav {
+  display: flex;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(20px);
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.15);
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 9999;
+}
+
+.top-nav__container {
+  margin: 0 auto;
+  min-width: 1440px;
+  padding: 16px 0 10px;
+  display: flex;
+  align-items: center;
+}
+
+.top-nav__container .logo {
+  margin-right: 18px;
+  width: 195px;
+  height: 59px;
+}
+
+.top-nav__container .logo img {
+  width: 100%;
+  height: 100%;
+}
+
+.top-nav__container .navigate-list {
+  flex: 1;
+  display: flex;
+}
+
+.top-nav__container .navigate-list li {
+  margin: 0 14px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.top-nav__container .navigate-list li span {
+  margin-left: 6px;
+  font-weight: 600;
+  font-size: 2.4rem;
+  line-height: 30px;
+  color: #87a173;
+}
+
+.top-nav__container .feature-list {
+  display: flex;
+  margin-right: 20px;
+}
+
+.top-nav__container .feature-list li:hover {
+  opacity: 0.7;
+  background-color: #fcfcfc;
+}
+
+.top-nav__container .feature-list li:hover #heart-icon__wrapper .back .left {
+  transform: rotateY(180deg) translateX(3px) scale(1.15);
+}
+
+.top-nav__container .feature-list li:hover #heart-icon__wrapper .back .right {
+  transform: translateX(3px) scale(1.15);
+}
+
+.top-nav__container .feature-list li {
+  margin: 0 7px;
+  padding: 9px 13px 7px;
+  display: flex;
+  align-items: center;
+  border: 1px solid;
+  border-color: #87a273;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.top-nav__container .feature-list span {
+  margin-left: 15px;
+  font-weight: 500;
+  font-size: 1.7rem;
+  line-height: 22px;
+  color: #87a173;
+}
+
+.top-nav__container .account-manage {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.top-nav__container .account-manage .avatar:hover {
+  opacity: 0.6;
+}
+
+.top-nav__container .account-manage .show-menu {
+  margin-left: 8px;
+  transition: all 0.2s;
+  transform-origin: center;
+}
+
+.top-nav__container .account-manage .show-menu.show {
+  transform: rotate(180deg);
+}
+
+.top-nav__container .account-manage .menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: calc(-20%);
+  background-color: #fff;
+  padding: 8px 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  border-radius: 15px;
+  display: none;
+  animation: showMenu 0.5s ease;
+  overflow: hidden;
+  z-index: 99999;
+}
+
+@keyframes showMenu {
+  0% {
+    height: 0;
+    opacity: 0.5;
+  }
+  100% {
+    height: 120px;
+    opacity: 1;
+  }
+}
+
+.top-nav__container .account-manage .menu.show {
+  display: block;
+}
+
+.top-nav__container .account-manage .menu li {
+  padding: 8px;
+  min-width: 128px;
+  font-size: 1.5rem;
+  font-weight: 500;
+  border-radius: 10px;
+}
+
+.top-nav__container .account-manage .menu > :last-child {
+  color: red;
+}
+
+.top-nav__container .account-manage .menu li:hover {
+  background-color: #eae8e8;
+}

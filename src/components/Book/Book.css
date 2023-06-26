@@ -1,5 +1,9 @@
 .book {
-  padding: 46px 0;
+  padding-top: 85px;
+}
+
+.book__wrapper {
+  padding: 46px 0 40px;
   display: flex;
   flex-direction: row-reverse;
   justify-content: center;
@@ -34,7 +38,7 @@
 .book-cover__left-front,
 .book-cover__left-back {
   border-radius: 10px;
-  padding-right: 5px;
+  /* padding-right: 5px; */
   font-size: 1.8rem;
   position: absolute;
   width: 100%;
@@ -103,6 +107,10 @@
   transform: rotateY(180deg);
 }
 
+.flipped .book__paper-back {
+  box-shadow: -2px 0 4px rgba(0, 0, 0, 0.2);
+}
+
 .flipped .book__paper-front,
 .flipped .book__paper-back,
 .flipped .book-cover__left-front,
@@ -139,6 +147,23 @@
   background-size: cover;
 }
 
+/* .book-cover__right::after {
+  content: "EaseMe sẽ luôn đồng hành cùng bạn!";
+  width: calc(100% - 6px);
+  height: 100%;
+  border-radius: 10px;
+  position: absolute;
+  top: 2px;
+  right: 6px;
+  background-color: #fff0d0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "iCiel Supa Mega Fantastic";
+  font-size: 30px;
+  letter-spacing: 1px;
+} */
+
 .book-pin {
   width: 0;
   /* background-image: url(../../assets//images/book/pin.png);
@@ -153,10 +178,12 @@
   transform: translateX(-50%);
   transition: width 0.2s ease-out;
   will-change: width;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
-.book .prev-btn,
-.book .next-btn {
+.book__wrapper .prev-btn,
+.book__wrapper .next-btn {
   background-color: transparent;
   color: transparent;
   border: none;
@@ -165,31 +192,26 @@
   user-select: none;
 }
 
-/* .book .prev-btn:hover,
-.book .next-btn:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-} */
-
-.book .prev-btn {
+.book__wrapper .prev-btn {
   position: absolute;
   z-index: 9999;
   left: -100%;
   height: 100%;
 }
 
-.book .next-btn {
+.book__wrapper .next-btn {
   position: absolute;
   z-index: 9999;
   right: 0;
   height: 100%;
 }
 
-.book .next-btn:hover::before {
+.book__wrapper .next-btn:hover::before {
   transform: rotate(270deg);
   visibility: visible;
 }
 
-.book .next-btn::before {
+.book__wrapper .next-btn::before {
   content: "";
   width: 40px;
   height: 40px;
@@ -200,13 +222,13 @@
   background-position: top right;
   position: absolute;
   bottom: -4px;
-  right: 0;
+  right: -7px;
   visibility: hidden;
   transform-origin: center;
   transform: rotate(90deg);
 }
 
-.book .prev-btn::before {
+.book__wrapper .prev-btn::before {
   content: "";
   width: 40px;
   height: 40px;
@@ -217,38 +239,50 @@
   background-position: top right;
   position: absolute;
   bottom: -3px;
-  left: -2px;
+  left: -8px;
   visibility: hidden;
   transform-origin: center;
 }
 
-.book .prev-btn:hover::before {
+.book__wrapper .prev-btn:hover::before {
   visibility: visible;
 }
 
 .book-cover__left-front {
-  background-color: #fff;
+  background-color: #fff2ee;
   background-image: url(../../assets/images/book/CoverMid.png);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: 0px 8px;
   z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .book-cover__left-front .content {
   padding-left: 30px;
   width: 100%;
+  height: 100%;
   text-align: center;
+  animation: zoom-out 2s;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.book-cover__left-front .content .label {
+  margin-bottom: 23px;
+  font-size: 90px;
+}
+
+.book-cover__left-front .content .name {
+  font-size: 80px;
 }
 
 .book-cover__left-front .content .label,
 .book-cover__left-front .content .name {
   font-family: iCiel Supa Mega Fantastic;
   font-weight: 400;
-  font-size: 90px;
   line-height: 77px;
   color: #87a173;
   word-break: break-all;
@@ -304,16 +338,16 @@
   color: #87a273;
 }
 
-.book .content p {
+.book__wrapper .content p {
   font-size: 14px;
   line-height: 18px;
   color: #000000;
 }
 
-.book .content .answer {
+.book__wrapper .content .answer {
   margin-bottom: 18px;
 }
 
-.book .content .message {
+.book__wrapper .content .message {
   font-weight: bold;
 }

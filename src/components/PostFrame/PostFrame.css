@@ -1,0 +1,63 @@
+.post-frame__wrapper {
+  padding: 10px 33px 10px 18px;
+  display: flex;
+  background-color: #fff;
+  justify-content: center;
+  border-radius: 15px;
+}
+
+.post-frame__wrapper .avatar {
+  margin-right: 18px;
+  width: 60px;
+  height: 60px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  border-radius: 50%;
+}
+
+.post-frame__wrapper .post-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.post-frame__wrapper .post-section textarea {
+  margin-top: 15px;
+  width: 100%;
+  border: none;
+  outline: none;
+}
+
+.post-frame__wrapper .post-section .submit-post-btn {
+  margin-top: 25px;
+  font-family: "Be Vietnam Pro";
+  padding: 5px 30px;
+  outline: none;
+  border: 2px solid #ff8080;
+  border-radius: 15px;
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.15);
+  font-weight: 600;
+  font-size: 1.6rem;
+  line-height: 25px;
+  cursor: pointer;
+  background: radial-gradient(
+    446.5% 301.92% at 50.09% 3.49%,
+    #fff2ee 23.44%,
+    #ffb0b0 41.97%,
+    #ffffff 54.17%
+  );
+  color: #87a173;
+}
+
+.post-frame__wrapper .post-section .submit-post-btn:disabled {
+  background: linear-gradient(
+    101.46deg,
+    rgba(199, 199, 199, 0.7) 18.95%,
+    rgba(185, 185, 185, 0.4) 74.93%
+  );
+  border-color: rgba(33, 33, 33, 0.4);
+  color: #212121;
+  cursor: default;
+}

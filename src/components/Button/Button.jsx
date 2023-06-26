@@ -1,9 +1,9 @@
 import "./Button.css";
 
-const Button = ({ text, borderWidth, handelOnClick, props }) => {
+const Button = ({ className, text, borderWidth, handelOnClick, props }) => {
   return (
     <button
-      className="btn"
+      className={className + " " + "btn"}
       onClick={handelOnClick}
       style={{ borderWidth: borderWidth }}
       {...props}

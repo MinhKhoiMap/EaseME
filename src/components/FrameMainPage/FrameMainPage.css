@@ -1,0 +1,191 @@
+.frame-main-page {
+  margin-top: 85px;
+  min-height: 679px;
+  background-color: #fff2ee;
+}
+
+.frame-main-page__container {
+  /* max-width: 1440px; */
+  padding: 20px 37px 20px 0;
+  display: flex;
+  gap: 28px;
+}
+
+.frame-main-page__container .right-section {
+  width: 368px;
+}
+
+.frame-main-page__container .right-section .sticky {
+  position: sticky;
+  right: 37px;
+  top: calc(85px + 20px);
+}
+
+.frame-main-page__container .right-section .search-bar {
+  width: 100%;
+  height: 48px;
+  display: flex;
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.15);
+  border-radius: 15px;
+}
+
+.frame-main-page__container .right-section .search-bar input {
+  width: 100%;
+  height: 100%;
+  padding: 4px 13px;
+  outline: none;
+  font-size: 1.6rem;
+  color: #87a173;
+  border-width: 2px;
+  border-style: solid;
+  border-top-color: #87a173;
+  border-bottom-color: #87a173;
+  border-left-color: #87a173;
+  border-right-width: 0;
+  border-radius: 15px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.frame-main-page__container .right-section .search-bar input:focus ~ button {
+  color: #87a173;
+}
+
+.frame-main-page__container .right-section .search-bar button {
+  width: 60px;
+  height: 100%;
+  outline: none;
+  font-size: 2rem;
+  border-width: 2px;
+  border-style: solid;
+  border-top-color: #87a173;
+  border-bottom-color: #87a173;
+  border-right-color: #87a173;
+  border-left-width: 0;
+  border-radius: 15px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  background-color: #fff;
+  cursor: pointer;
+  color: #fff;
+  transition: all 0.2s;
+}
+
+.frame-main-page__container .right-section .filter-tags {
+  margin-top: 18px;
+  padding: 22px 21px;
+  background: linear-gradient(
+    101.46deg,
+    rgba(255, 255, 255, 0.7) 18.95%,
+    rgba(255, 255, 255, 0.4) 74.93%
+  );
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.15);
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.frame-main-page__container .right-section .filter-tags .title {
+  font-weight: 600;
+  color: #87a173;
+  font-size: 2.4rem;
+  line-height: 30px;
+}
+
+.frame-main-page__container .right-section .filter-tags .tag-list {
+  margin-top: 18px;
+  margin-bottom: -25px;
+}
+
+.frame-main-page__container .right-section .filter-tags .tag-list li {
+  margin-bottom: 18px;
+  margin-right: 20px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid;
+}
+
+.frame-main-page__container .right-section .filter-tags .tag-list li span {
+  margin-left: 5px;
+  font-weight: 300;
+  font-size: 1.4rem;
+  line-height: 18px;
+}
+
+.frame-main-page__container .right-section .hotline-info {
+  margin-top: 18px;
+  padding: 22px 21px;
+  background: linear-gradient(
+    101.46deg,
+    rgba(255, 255, 255, 0.7) 18.95%,
+    rgba(255, 255, 255, 0.4) 74.93%
+  );
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.15);
+  border-radius: 15px;
+}
+
+.frame-main-page__container .right-section .hotline-info .title {
+  margin-bottom: 13px;
+  font-weight: 500;
+  font-size: 1.7rem;
+  line-height: 22px;
+  color: #87a173;
+}
+
+.frame-main-page__container .right-section .hotline-info .message {
+  margin-bottom: 26px;
+  color: #000;
+  font-weight: 300;
+  font-size: 1.4rem;
+  line-height: 18px;
+}
+
+.frame-main-page__container .right-section .hotline-info a {
+  color: #bc2525;
+  font-weight: 700;
+  font-size: 1.4rem;
+  line-height: 18px;
+}
+
+.frame-main-page__container .right-section .more-page {
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.frame-main-page__container .right-section .more-page p {
+  padding: 0 12px;
+  margin-bottom: 15px;
+  font-weight: 300;
+  font-size: 1.4rem;
+  line-height: 18px;
+  position: relative;
+  transition: all 0.15s;
+}
+
+.frame-main-page__container .right-section .more-page p::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  display: block;
+  border-radius: 50%;
+  background: #7d7d7d;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.frame-main-page__container .right-section .more-page p:hover {
+  text-decoration: underline;
+  color: #87a173;
+}
+
+.frame-main-page__container .left-section {
+  width: 320px;
+}
+
+.frame-main-page__container .center-section {
+  width: calc(100% - 378px - 320px);
+}
