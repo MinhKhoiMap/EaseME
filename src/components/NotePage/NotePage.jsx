@@ -17,7 +17,7 @@ const NotePage = () => {
   return (
     <div className="note-page__container">
       {quotes.map((quote) => (
-        <div className="note">
+        <div className="note" key={quote}>
           <Notes
             noteType={Math.floor(Math.random() * (5 - 1)) + 1}
             text={quote}

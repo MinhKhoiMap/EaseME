@@ -10,15 +10,19 @@ import Book from "./components/Book/Book";
 import FrameMainPage from "./components/FrameMainPage/FrameMainPage";
 import Profile from "./pages/Profile/Profile";
 import CropperImage from "./components/CropperImage/CropperImage";
+import MyDiary from "./pages/MyDiary/MyDiary";
 
 import av from "./assets/images/avatarTest.png";
 import av1 from "./assets/images/wallpaper.jpg";
+import TestComp from "./components/TestComp/TestComp";
+import Loader from "./components/Loader/Loader";
 
 function App() {
   return (
     <div className="App">
       <TopNavBar />
       <Routes>
+        <Route path="/" element={<Loader />} />
         <Route path="login" element={<Login />} />
         <Route path="survey" element={<Survey />} />
         <Route
@@ -44,20 +48,9 @@ function App() {
           }
         />
         <Route path="page" element={<FrameMainPage />}>
+          <Route path="" element={<MyDiary />} />
           <Route path="profile" element={<Profile />} />
         </Route>
-        <Route
-          path="/"
-          element={
-            <CropperImage
-              imgSizeX={200}
-              imgSizeY={200}
-              maxvalZoom={5}
-              cropShape="round"
-              file={av}
-            />
-          }
-        />
       </Routes>
     </div>
   );

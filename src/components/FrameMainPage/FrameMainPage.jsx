@@ -2,7 +2,6 @@ import "./FrameMainPage.css";
 import { Link, Outlet } from "react-router-dom";
 
 import NotePage from "../NotePage/NotePage";
-import MessageComp from "../MessageComp/Message";
 
 const FrameMainPage = () => {
   const tagList = [
@@ -64,10 +63,6 @@ const FrameMainPage = () => {
           <NotePage />
         </div>
         <div className="center-section">
-          {/* <MessageComp
-            content="Nếu cậu thấy không vui, cứ dùng nơi này để viết gì đó cho bản thân,
-            dù chỉ là một câu chào cũng được ❤️"
-          /> */}
           <Outlet />
         </div>
         <div className="right-section">

@@ -1,0 +1,207 @@
+:root {
+  --primary: #ff8080;
+}
+
+.loader {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    155deg,
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(255, 255, 255, 0.9) 100%
+  );
+}
+
+.loader__container {
+  padding: 60px 40px 20px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.loader__main {
+  height: 90px;
+  transform: translateX(-30px);
+}
+
+.loader__text {
+  --size: 5;
+  font-size: 3.7rem;
+  font-weight: 400;
+  letter-spacing: 1px;
+  color: #87a173;
+  font-weight: 800;
+  font-style: italic;
+  font-family: Fz-Billie-Endria;
+  position: relative;
+  left: calc(var(--size) * 1px * -3);
+  text-shadow: 10px 10px 10px #ccc;
+}
+
+.chase {
+  position: relative;
+}
+
+.chase:after,
+.chase:before {
+  content: "";
+  height: 30px;
+  width: 30px;
+  display: block;
+  -webkit-animation: out 0.5s backwards, spin 1.25s 0.5s infinite ease;
+  animation: out 0.5s backwards, spin 1.25s 0.5s infinite ease;
+  border: 5px solid #87a173;
+  border-radius: 100%;
+  -webkit-box-shadow: 0 -40px 0 -5px #ff8080;
+  box-shadow: 0 -40px 0 -5px #ff8080;
+  position: absolute;
+}
+
+.chase:after {
+  -webkit-animation-delay: 0s, 1.25s;
+  animation-delay: 0s, 1.25s;
+}
+
+@-webkit-keyframes out {
+  from {
+    -webkit-box-shadow: 0 0 0 -5px #ff8080;
+    box-shadow: 0 0 0 -5px #ff8080;
+  }
+}
+
+@keyframes out {
+  from {
+    -webkit-box-shadow: 0 0 0 -5px #ff8080;
+    box-shadow: 0 0 0 -5px #ff8080;
+  }
+}
+
+@-webkit-keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes rotating-dots {
+  0% {
+    -webkit-transform: translate(calc(var(--translate) * 1%), 0)
+      rotateY(calc(var(--rotation, 0) * 1deg)) rotate(0deg);
+    transform: translate(calc(var(--translate) * 1%), 0)
+      rotateY(calc(var(--rotation, 0) * 1deg)) rotate(0deg);
+  }
+  50%,
+  100% {
+    -webkit-transform: translate(calc(var(--translate) * 1%), 0)
+      rotateY(calc(var(--rotation, 0) * 1deg)) rotate(180deg);
+    transform: translate(calc(var(--translate) * 1%), 0)
+      rotateY(calc(var(--rotation, 0) * 1deg)) rotate(180deg);
+  }
+}
+@keyframes rotating-dots {
+  0% {
+    -webkit-transform: translate(calc(var(--translate) * 1%), 0)
+      rotateY(calc(var(--rotation, 0) * 1deg)) rotate(0deg);
+    transform: translate(calc(var(--translate) * 1%), 0)
+      rotateY(calc(var(--rotation, 0) * 1deg)) rotate(0deg);
+  }
+  50%,
+  100% {
+    -webkit-transform: translate(calc(var(--translate) * 1%), 0)
+      rotateY(calc(var(--rotation, 0) * 1deg)) rotate(180deg);
+    transform: translate(calc(var(--translate) * 1%), 0)
+      rotateY(calc(var(--rotation, 0) * 1deg)) rotate(180deg);
+  }
+}
+
+@-webkit-keyframes rotating-dots-flash {
+  0%,
+  50% {
+    visibility: visible;
+  }
+  50.0001%,
+  100% {
+    visibility: hidden;
+  }
+}
+
+@keyframes rotating-dots-flash {
+  0%,
+  50% {
+    visibility: visible;
+  }
+  50.0001%,
+  100% {
+    visibility: hidden;
+  }
+}
+
+.rotating-dots {
+  --duration: 1;
+  width: calc(var(--size) * 1px);
+  height: calc(var(--size) * 1px);
+  position: absolute;
+  bottom: 0;
+  left: calc(100% + 0px);
+  transform: translate(calc(100% * 3), calc(-250% + 2px));
+}
+
+.rotating-dots div {
+  width: 100%;
+  height: 100%;
+  -webkit-animation: rotating-dots calc(var(--duration) * 1s)
+    calc(var(--delay, 0) * 1s) infinite;
+  animation: rotating-dots calc(var(--duration) * 1s) calc(var(--delay, 0) * 1s)
+    infinite;
+  position: absolute;
+  -webkit-transform: translate(calc(var(--translate) * 1%), 0);
+  transform: translate(calc(var(--translate) * 1%), 0);
+}
+
+.rotating-dots div:after,
+.rotating-dots div:before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  background: #87a173;
+  border-radius: 100%;
+  position: absolute;
+}
+
+.rotating-dots div:after {
+  -webkit-animation: rotating-dots-flash calc(var(--duration) * 1s)
+    calc(var(--delay, 0) * 1s) infinite steps(2);
+  animation: rotating-dots-flash calc(var(--duration) * 1s)
+    calc(var(--delay, 0) * 1s) infinite steps(2);
+  -webkit-transform: translate(-100%, 0);
+  transform: translate(-100%, 0);
+}
+
+.rotating-dots div:before {
+  -webkit-transform: translate(100%, 0);
+  transform: translate(100%, 0);
+}
+
+.rotating-dots div:nth-of-type(1) {
+  --translate: -100;
+}
+
+.rotating-dots div:nth-of-type(2) {
+  --delay: calc((var(--duration) / 2) * -1);
+  --rotation: 180;
+  --translate: 100;
+}

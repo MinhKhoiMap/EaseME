@@ -40,7 +40,7 @@
   overflow-y: auto;
 }
 
-.cropper-image__container .cropper-image__body::-webkit-scrollbar {
+/* .cropper-image__container .cropper-image__body::-webkit-scrollbar {
   width: 5px;
 }
 
@@ -52,7 +52,7 @@
 .cropper-image__container .cropper-image__body::-webkit-scrollbar-thumb {
   background-color: #f39f95;
   border-radius: 50px;
-}
+} */
 
 .cropper-image__display-image-container {
   padding: 0 40px;
@@ -246,7 +246,7 @@
 }
 
 .cropper-image__preview-avatar img {
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
+  /* width: 200px;
+  height: 200px; */
+  /* border-radius: 50%; */
 }

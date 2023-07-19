@@ -1,0 +1,332 @@
+.post__container {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+.post__container .post__header {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.post__container .post__header .avatar {
+  width: 60px;
+  height: 60px;
+}
+
+.post__container .post__header .avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.post__container .post__header .general-info {
+  flex: 1;
+}
+
+.post__container .post__header .general-info .username {
+  color: #000;
+  font-size: 2rem;
+  font-weight: 600;
+  display: flex;
+  align-items: baseline;
+}
+
+.post__container .post__header .general-info .username img {
+  margin-left: 4px;
+  width: 15px;
+  height: 15px;
+}
+
+.post__container .post__header .general-info .privacy {
+  font-size: 1.2rem;
+}
+
+.post__container .post__header .show-func-menu {
+  margin-right: 18px;
+  position: relative;
+}
+
+.post__container .post__header .show-func-menu .icon-show {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s linear;
+  position: relative;
+}
+
+.post__container .post__header .show-func-menu .icon-show:hover {
+  background-color: #f0f2f5;
+  cursor: pointer;
+}
+
+.post__container .post__header .show-func-menu .icon-show i {
+  font-size: 1.9rem;
+  color: #65676b;
+  position: relative;
+  top: 1px;
+}
+
+.post__container .post__body {
+  margin: 15px 0px;
+  padding: 0 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.post__container .post__body .content {
+  width: 100%;
+  font-size: 1.5rem;
+  color: #000;
+  line-height: 25px;
+  min-height: 1px;
+}
+
+.post__container .post__body .content blockquote {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-left: 6px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-right-radius: 10px;
+  background-color: rgb(248, 248, 248);
+  border-left: 4px solid #ccc;
+  box-shadow: 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+.post__container .post__body.read-more .content {
+  max-height: 150px;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(#fff, hsla(0, 0%, 100%, 0));
+}
+
+.post__container .post__body .read-more-btn {
+  padding: 20px 0 10px 0;
+  font-family: "Be VietNam Pro", sans-serif;
+  width: 100%;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  background: linear-gradient(180deg, transparent, #fff2ee);
+  color: #ff8080;
+  font-size: 1.7rem;
+  font-weight: 600;
+  outline: none;
+  border: none;
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+}
+
+.post__container .post__body .read-more-btn:hover {
+  text-decoration: underline #ca8c83;
+  cursor: pointer;
+}
+
+.post__container .post__body .read-less-btn {
+  margin-top: 15px;
+  font-family: "Be VietNam Pro", sans-serif;
+  width: fit-content;
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: #ff8080;
+  background-color: transparent;
+  outline: none;
+  border: none;
+}
+
+.post__container .post__body .read-less-btn:hover {
+  text-decoration: underline #ca8c83;
+  cursor: pointer;
+}
+
+.post__container .post__body .content a {
+  display: inline-block;
+}
+
+.post__container .post__body .content img {
+  width: 100%;
+}
+
+.post__container .post__footer {
+  padding: 0 15px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.post__container .post__footer .reaction {
+  display: flex;
+  align-items: flex-end;
+}
+
+.post__container .post__footer .reaction .icon {
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.post__container .post__footer .reaction .icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.post__container .post__footer .reaction .number {
+  /* margin-left: 4px; */
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: #87a173;
+}
+
+.post__container .post__footer .post-date {
+  flex: 1;
+  margin-left: 30px;
+  color: #87a173;
+  font-size: 1.4rem;
+}
+
+.post__container .post__footer .tag {
+  padding: 2px 6px;
+  border-radius: 10px;
+  border: 1px solid #f594a9;
+  background-color: #ffe4e4;
+  color: #ff8080;
+  font-size: 1.4rem;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+}
+
+.post__container .post__footer .tag i {
+  margin-right: 5px;
+  color: #f594a9;
+  font-size: 1rem;
+  position: relative;
+  top: 1px;
+}
+
+.post__container .post__header .show-func-menu .func-menu {
+  margin-top: 15px;
+  padding: 2px 0;
+  background-color: #fff;
+  filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.2));
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top: calc(100% - 12px);
+  right: 14px;
+  z-index: 999;
+  border-radius: 10px 0 10px 10px;
+  transform-origin: top right;
+  animation: slide-down 0.2s ease-in;
+}
+
+.post__container .post__header .show-func-menu .func-menu svg {
+  position: absolute;
+  bottom: calc(100% - 2px);
+  right: 0;
+}
+
+.post__container .post__header .show-func-menu .func-menu__container {
+  min-width: 280px;
+  padding: 8px 8px;
+  margin-right: 4px;
+  max-height: 220px;
+  overflow: auto;
+  border-radius: 10px 0 10px 10px;
+}
+
+.post__container .post__header .show-func-menu .func-menu__container ul {
+  padding: 8px 0;
+  border-top: 1px solid #dadcdf;
+}
+
+.post__container
+  .post__header
+  .show-func-menu
+  .func-menu__container
+  ul:first-child {
+  border: none;
+  padding-top: 0;
+}
+
+.post__container
+  .post__header
+  .show-func-menu
+  .func-menu__container
+  ul:last-child {
+  padding-bottom: 0;
+}
+
+.post__container .post__header .show-func-menu .func-menu__container ul li {
+  padding: 6px 8px;
+  border-radius: 5px;
+  display: flex;
+}
+
+.post__container
+  .post__header
+  .show-func-menu
+  .func-menu__container
+  ul
+  li
+  .icon {
+  margin-right: 12px;
+  width: 20px;
+  height: 20px;
+  color: #050505;
+  font-size: 2rem;
+  display: block;
+}
+
+.post__container
+  .post__header
+  .show-func-menu
+  .func-menu__container
+  ul
+  li
+  .icon
+  > * {
+  width: 100%;
+  height: 100%;
+}
+
+.post__container
+  .post__header
+  .show-func-menu
+  .func-menu__container
+  ul
+  li:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+}
+
+.post__container
+  .post__header
+  .show-func-menu
+  .func-menu__container
+  ul
+  li
+  .explain-text {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #050505;
+}
+
+.post__container
+  .post__header
+  .show-func-menu
+  .func-menu__container
+  .explain-text
+  .explain {
+  margin-top: 5px;
+  color: #65676b;
+  font-size: 1.2rem;
+  font-weight: 400;
+}

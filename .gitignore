@@ -5,11 +5,19 @@
 /.pnp
 .pnp.js
 
+#ide
+.code-workspace
 # testing
 /coverage
 
 # production
 /build
+
+# environment
+.env
+
+# IDE
+.code-workspace
 
 # misc
 .DS_Store

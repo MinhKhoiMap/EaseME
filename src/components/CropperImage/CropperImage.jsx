@@ -4,15 +4,16 @@ import "./CropperImage.css";
 import Cropper from "react-easy-crop";
 
 import Button from "../Button/Button";
-import getCroppedImg from "./CropImg/CropImg";
+import getCroppedImg from "./utils/CropImg";
 
 const CropperImage = ({
-  file,
+  imageURL,
   imgSizeX = 100,
   imgSizeY = 100,
   maxvalZoom = 5,
   stepZoom = 0.5,
   cropShape = "",
+  setPhotoURL,
   closeCropModalFunc,
   saveCroppedImgFunc,
   title = "Cropper Image",
@@ -24,22 +25,24 @@ const CropperImage = ({
   const [rotation, setRotation] = useState(0);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
 
-  const [croppedImg, setCroppedImg] = useState(null);
-
   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
     // console.log(croppedAreaPixels, crop);
     setCroppedAreaPixels(croppedAreaPixels);
   }, []);
 
-  const getResultCroppedImg = useCallback(async () => {
+  const getResultCroppedImg = async () => {
     try {
-      const croppedImg = await getCroppedImg(file, croppedAreaPixels, rotation);
-      // console.log(croppedImg);
-      setCroppedImg(croppedImg);
+      const { file, blob } = await getCroppedImg(
+        imageURL,
+        croppedAreaPixels,
+        rotation
+      );
+      console.log(file, blob, "vcl");
+      return { croppedFile: file, blob };
     } catch (e) {
       console.log(e);
     }
-  }, [croppedAreaPixels, rotation]);
+  };
 
   return (
     <div className="cropper-image" onClick={closeCropModalFunc}>
@@ -71,7 +74,7 @@ const CropperImage = ({
                 containerClassName: "cropper-image__display-image",
                 cropAreaClassName: "cropper-image__crop-area",
               }}
-              image={file}
+              image={imageURL}
               crop={crop}
               zoom={zoom}
               aspect={1 / 2}
@@ -184,10 +187,10 @@ const CropperImage = ({
               </div>
             </div>
           </div>
-          <div className="cropper-image__preview-avatar">
+          {/* <div className="cropper-image__preview-avatar">
             <button onClick={getResultCroppedImg}>show</button>
             <img src={croppedImg?.blob} alt="preview-image" />
-          </div>
+          </div> */}
         </div>
         <footer className="cropper-image__footer">
           <Button
@@ -198,7 +201,14 @@ const CropperImage = ({
           <Button
             text="Lưu"
             className="complete-btn"
-            props={{ onClick: saveCroppedImgFunc }}
+            props={{
+              onClick: async () => {
+                const { croppedFile, blob } = await getResultCroppedImg();
+                console.log(croppedFile, "vai");
+                saveCroppedImgFunc(croppedFile);
+                // setPhotoURL(url);
+              },
+            }}
           />
         </footer>
         <button className="top-close-btn" onClick={closeCropModalFunc}>
