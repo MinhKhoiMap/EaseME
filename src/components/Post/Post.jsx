@@ -35,7 +35,7 @@ const Post = ({
     }
   }, [content]);
 
-  /* ************ Render Component ************ */
+  /* ************ Render JSX ************ */
   return (
     <div className="post">
       <div className="post__container">
@@ -78,7 +78,7 @@ const Post = ({
                         <li
                           key={menu.label}
                           onClick={() => {
-                            menu?.handleOnClick(id_post);
+                            menu?.handleOnClick && menu.handleOnClick(id_post);
                           }}
                         >
                           <span className="icon">{menu.icon}</span>

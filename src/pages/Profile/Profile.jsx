@@ -1,8 +1,18 @@
-import { useEffect, useState } from "react";
+// Import libraries
+import { useEffect, useMemo, useState } from "react";
 import "./Profile.css";
+import { useSelector } from "react-redux";
+import { useQuery } from "@tanstack/react-query";
+
+// Import utilities
 import PostService from "../../services/post.service";
 import UserService from "../../services/user.service";
+import { calcTime } from "../../utils/utils";
 
+// Import redux utilities
+import { userProfileSelector } from "../../redux/selectors/userSelector";
+
+// Import components
 import wall from "../../assets/images/avatarTest.png";
 import ava from "../../assets/images/wallpaper.jpg";
 import MessageComp from "../../components/MessageComp/Message";
@@ -15,8 +25,7 @@ const token_test =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoiNjRhOTgzOTU1YTEyZTgyMDliZTEzNDk1IiwiaWF0IjoxNjg4ODMyNTEwfQ.udvfx_bFvQFffxeVoMhwQKMhUjXOcoY_0TorTGBwyqU";
 
 const Profile = () => {
-  let name = "Chiến thần thất nghiệp";
-  let date = "10/05/2023";
+  const userProfile = useSelector(userProfileSelector);
 
   const [myPostList, setMyPostList] = useState([]);
 
@@ -24,7 +33,7 @@ const Profile = () => {
   const [imgSizeX, setImgSizeX] = useState(0);
   const [imgSizeY, setImgSizeY] = useState(0);
   const [shapeImage, setShapeImage] = useState("");
-  const [usernameEdit, setUsernameEdit] = useState(name);
+  const [usernameEdit, setUsernameEdit] = useState("");
   const [contentPost, setContentPost] = useState("");
   const [titleCropper, setTitleCropper] = useState("");
   const [file, setFile] = useState(undefined); // Image Origin
@@ -35,8 +44,23 @@ const Profile = () => {
   const [isReactUser, setIsReactUser] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  useMemo(() => {
+    setUsernameEdit(userProfile.name);
+  }, [userProfile]);
+
+  const myPostQuery = useQuery({
+    queryKey: ["postsList", "my-posts"],
+    queryFn: () => {
+      setIsLoading(true);
+      return PostService.getUserPosts(token_test);
+    },
+    refetchOnWindowFocus: false,
+    staleTime: calcTime("10m"),
+    cacheTime: calcTime("15m"),
+  });
+
   function cancelEditName() {
-    setUsernameEdit(name);
+    setUsernameEdit(userProfile.name);
     setEditUsername(false);
   }
 
@@ -115,21 +139,16 @@ const Profile = () => {
   }
 
   useEffect(() => {
-    setIsLoading(true);
-    PostService.getUserPosts(token_test)
-      .then(({ data }) => {
-        console.log(data, "my post call api");
-        setMyPostList(data.posts);
-      })
-      .catch((err) => {
-        console.log(err, "error my post call api");
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, []);
+    if (myPostQuery.isSuccess) {
+      setMyPostList(myPostQuery.data.data.posts);
+    } else if (myPostQuery.isError) {
+      console.log(myPostQuery.error);
+    }
 
-  /* ************ Render Component ************ */
+    if (!myPostQuery.isLoading) setIsLoading(false);
+  }, [myPostQuery.fetchStatus]);
+  
+  /* ************ Render JSX ************ */
   return (
     <div className="profile-page">
       <div className="profile-page__wrapper">
@@ -137,8 +156,12 @@ const Profile = () => {
           <div className="wallpaper-wrapper">
             <div
               className="wallpaper"
-              style={{ backgroundImage: `url(${ava})` }}
-            ></div>
+              style={{ backgroundImage: `url(${userProfile.wallpaper_url})` }}
+            >
+              {/* <div className="show-wallpaper__modal">
+                <img src={userProfile.wallpaper_full_url} alt="wallpaper" />
+              </div> */}
+            </div>
             <div className="edit-wallpaper">
               <input
                 type="file"
@@ -155,7 +178,7 @@ const Profile = () => {
           <div className="avatar-wrapper">
             <div
               className="avatar"
-              style={{ backgroundImage: `url(${wall})` }}
+              style={{ backgroundImage: `url(${userProfile.avatar_url})` }}
             ></div>
             <div className="edit-avatar">
               <input
@@ -210,11 +233,28 @@ const Profile = () => {
                 )}
               </button>
             </div>
-            <p className="join-date">Tham gia EaseMe từ: {date}</p>
+            <p className="join-date">
+              Tham gia EaseMe từ:
+              <span style={{ marginLeft: "6px" }}>
+                {userProfile.join_date
+                  ? new Date(userProfile.join_date).getDate() +
+                    "/" +
+                    (new Date(userProfile.join_date).getMonth() + 1) +
+                    "/" +
+                    new Date(userProfile.join_date).getFullYear()
+                  : <i className="fa-solid fa-infinity"></i> /
+                    <i className="fa-solid fa-infinity"></i> /
+                    <i className="fa-solid fa-infinity"></i>}
+              </span>
+            </p>
           </div>
         </div>
-        <MessageComp content="Hôm nay cậu đã làm rất tốt, hãy thưởng cho mình một giấc ngủ ngon nhé!" />
-        <PostFrame contentPost={contentPost} setContentPost={setContentPost} />
+        <MessageComp content="Hôm nay cậu đã làm rất tốt, hãy thưởng cho mình một giấc ngủ ngon nhé!🥰" />
+        <PostFrame
+          avaURL={userProfile.avatar_url}
+          contentPost={contentPost}
+          setContentPost={setContentPost}
+        />
         <div className="my-post">
           {myPostList &&
             myPostList.map((post) => {
@@ -222,8 +262,8 @@ const Profile = () => {
                 <Post
                   id_post={post._id}
                   key={post._id}
-                  username="Chiến thần thất nghiệp"
-                  avaURL={wall}
+                  username={userProfile.name}
+                  avaURL={userProfile.avatar_url}
                   privacyIcon={
                     String(post.privacy).toLowerCase() === "private" ? (
                       <i className="fa-solid fa-lock"></i>
@@ -236,7 +276,7 @@ const Profile = () => {
                   content={post.content}
                   tag={post.tag}
                   isReact={isReactUser}
-                  isDoctor={true}
+                  isDoctor={userProfile.role === "psychologists"}
                   changeReactFunc={setIsReactUser}
                   date={new Date().toLocaleString()}
                   menuItemsList={[

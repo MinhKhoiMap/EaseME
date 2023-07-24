@@ -1,12 +1,24 @@
-import { useEffect, useRef, useState } from "react";
+// Import libraries
+import { useEffect, useRef, useState, useMemo } from "react";
 import "./PostFrame.css";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { useDispatch, useSelector } from "react-redux";
+
+// Import services
 import PostService from "../../services/post.service";
 
-import defaultAva from "../../assets/images/avatar-default.png";
+// Import redux utilities
+import { retrieveTags } from "../../redux/slices/tagSlice";
+import { tagsSelector } from "../../redux/selectors/tagSelector";
+
+// Import components
 import DropDown from "../DropDown/DropDown";
 import Loader from "../Loader/Loader";
+
+// Import utilities
+import defaultAva from "../../assets/images/avatar-default.png";
 
 const modules = {
   toolbar: [
@@ -19,6 +31,7 @@ const modules = {
   ],
 };
 
+// Functional Components
 const PostFrame = ({ avaURL, contentPost = "", setContentPost }) => {
   // const tagList = [
   //   {
@@ -64,6 +77,8 @@ const PostFrame = ({ avaURL, contentPost = "", setContentPost }) => {
   //     tag: "Khác",
   //   },
   // ];
+  const dispatch = useDispatch();
+  const tagsData = useSelector(tagsSelector);
 
   const quillReact = useRef();
 
@@ -71,11 +86,23 @@ const PostFrame = ({ avaURL, contentPost = "", setContentPost }) => {
   const [isDisabledButton, setIsDisabledButton] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
-  // const [contentPost, setContentPost] = useState("");
-  const [tagsList, setTagsList] = useState(null);
+  const [tagsList, setTagsList] = useState([]);
   const [textEdit, setTextEdit] = useState(contentPost);
   const [tagsSelected, setTagsSelected] = useState(null);
   const [privacy, setPrivacy] = useState(null);
+
+  const tagsQuery = useQuery({
+    queryKey: ["tags"],
+    queryFn: () => {
+      setIsLoading(true);
+      return PostService.getTags();
+    },
+    refetchOnWindowFocus: false,
+  });
+
+  useMemo(() => {
+    setTagsList(tagsData);
+  }, [tagsData]);
 
   function resetState() {
     setTextEdit("");
@@ -86,7 +113,7 @@ const PostFrame = ({ avaURL, contentPost = "", setContentPost }) => {
   }
 
   function postStory(e) {
-    e.preventDefault();
+    // e.preventDefault();
     setContentPost(textEdit);
     if (tagsSelected && tagsSelected._id && privacy) {
       setIsLoading(true);
@@ -121,6 +148,18 @@ const PostFrame = ({ avaURL, contentPost = "", setContentPost }) => {
     // console.log({ post: contentPost, tags: tagsSelected, privacy: privacy });
   }
 
+  // Monitor query
+  useEffect(() => {
+    if (!tagsQuery.isLoading) {
+      setIsLoading(false);
+    }
+    if (tagsQuery.isSuccess) {
+      dispatch(retrieveTags(tagsQuery.data.data.tags));
+      // setTagsList(tagsQuery.data.data.tags);
+    }
+  }, [tagsQuery.fetchStatus]);
+
+  // Check trigger submit button
   useEffect(() => {
     const quill = quillReact.current.getEditor();
     // console.log(quill.getLength());
@@ -131,17 +170,7 @@ const PostFrame = ({ avaURL, contentPost = "", setContentPost }) => {
     }
   }, [textEdit, tagsSelected?.tag, privacy?.tag]);
 
-  useEffect(() => {
-    PostService.getTags()
-      .then(({ data }) => {
-        // console.log(data.tags, "tag");
-        setTagsList(data.tags);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
+  /* ************ Render JSX ************ */
   return (
     <div
       className={`post-frame ${editMode ? "edit-mode" : ""}`}

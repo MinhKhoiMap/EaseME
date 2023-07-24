@@ -1,28 +1,65 @@
-import React from "react";
-import "./App.css";
-
+// Import libraries
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useQuery } from "@tanstack/react-query";
 import { Routes, Route } from "react-router-dom";
 
+// Import services
+import userService from "./services/user.service";
+
+// Import redux utilities
+import { retrieveUser } from "./redux/slices/userSlice";
+
+// Import styles
+import "./App.css";
+
+// Import components
 import TopNavBar from "./components/TopNavBar/TopNavBar";
 import Login from "./pages/Login/Login";
 import Survey from "./pages/Survey/Survey";
 import Book from "./components/Book/Book";
-import FrameMainPage from "./components/FrameMainPage/FrameMainPage";
+import MainPageLayout from "./components/MainPageLayout/MainPageLayout";
 import Profile from "./pages/Profile/Profile";
-import CropperImage from "./components/CropperImage/CropperImage";
 import MyDiary from "./pages/MyDiary/MyDiary";
+import Loader from "./components/Loader/Loader";
 
+// Test
 import av from "./assets/images/avatarTest.png";
 import av1 from "./assets/images/wallpaper.jpg";
 import TestComp from "./components/TestComp/TestComp";
-import Loader from "./components/Loader/Loader";
+
+const token_test =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoiNjRhOTgzOTU1YTEyZTgyMDliZTEzNDk1IiwiaWF0IjoxNjg4ODMyNTEwfQ.udvfx_bFvQFffxeVoMhwQKMhUjXOcoY_0TorTGBwyqU";
 
 function App() {
+  const dispatch = useDispatch();
+
+  const [showLoader, setShowLoader] = useState(false);
+
+  const userProfileQuery = useQuery({
+    queryKey: ["user"],
+    queryFn: () => {
+      setShowLoader(true);
+      return userService.loginWithToken(token_test);
+    },
+    refetchOnWindowFocus: false,
+  });
+
+  useEffect(() => {
+    if (!userProfileQuery.isLoading) {
+      setShowLoader(false);
+    }
+    if (userProfileQuery.isSuccess) {
+      dispatch(retrieveUser(userProfileQuery.data.data.user));
+    }
+  }, [userProfileQuery.fetchStatus]);
+
+  /* ************ Render JSX ************ */
   return (
     <div className="App">
       <TopNavBar />
       <Routes>
-        <Route path="/" element={<Loader />} />
+        {/* <Route path="/" element={<Loader />} /> */}
         <Route path="login" element={<Login />} />
         <Route path="survey" element={<Survey />} />
         <Route
@@ -47,11 +84,12 @@ function App() {
             />
           }
         />
-        <Route path="page" element={<FrameMainPage />}>
+        <Route path="page" element={<MainPageLayout />}>
           <Route path="" element={<MyDiary />} />
           <Route path="profile" element={<Profile />} />
         </Route>
       </Routes>
+      {showLoader && <Loader />}
     </div>
   );
 }

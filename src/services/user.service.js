@@ -9,6 +9,12 @@ class UserServiceClass {
     return http.post("/api/login", { username, password });
   }
 
+  loginWithToken(user_token) {
+    return http.get("/api/login/token", {
+      headers: { authorization: user_token },
+    });
+  }
+
   getPsychologistInfo(id_user) {
     return http.get(`/${this.route_url}/${id_user}`);
   }

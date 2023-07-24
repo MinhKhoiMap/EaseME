@@ -13,6 +13,8 @@ const DropDown = ({
   const [selectedColor, setSelectedColor] = useState(defaultColor);
   const [iconJSX, setIconJSX] = useState(null);
 
+  console.log(listItem, "listItem");
+
   function resetState() {
     setSelectedColor(defaultColor);
     setIconJSX(null);

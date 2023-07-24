@@ -1,60 +1,77 @@
-import "./FrameMainPage.css";
+// Import libraries
+import { useMemo, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
 
+// Import redux utilities
+import { tagsSelector } from "../../redux/selectors/tagSelector";
+
+// Import styles
+import "./MainPageLayout.css";
+
+// Import components
 import NotePage from "../NotePage/NotePage";
 
 const FrameMainPage = () => {
-  const tagList = [
-    {
-      colorText: "#F7C800",
-      backgroundColor: "#FFF0D0",
-      colorDisc: "#FFCB57",
-      borderColor: "#F7C800",
-      tag: "Gia đình",
-    },
-    {
-      colorText: "#FF8080",
-      backgroundColor: "#FFE4E4",
-      colorDisc: "#F594A9",
-      borderColor: "#F594A9",
-      tag: "Tình yêu",
-    },
-    {
-      colorText: "#87A173",
-      backgroundColor: "#E0F8DD",
-      colorDisc: "#87A173",
-      borderColor: "#87A173",
-      tag: "Bạn bè",
-    },
-    {
-      colorText: "#97AEDF",
-      backgroundColor: "#E4F4FF",
-      colorDisc: "#97AEDF",
-      borderColor: "#97AEDF",
-      tag: "Công việc",
-    },
-    {
-      colorText: "#66B4B9",
-      backgroundColor: "#D7F5F7",
-      colorDisc: "#66B4B9",
-      borderColor: "#66B4B9",
-      tag: "Tâm trạng",
-    },
-    {
-      colorText: "#BC2525",
-      backgroundColor: "#FFE4E4",
-      colorDisc: "#BC2525",
-      borderColor: "#BC2525",
-      tag: "nsfw",
-    },
-    {
-      colorText: "#7D7D7D",
-      backgroundColor: "#E9E9E9",
-      colorDisc: "#7D7D7D",
-      borderColor: "#7D7D7D",
-      tag: "Khác",
-    },
-  ];
+  // const tagList = [
+  //   {
+  //     colorText: "#F7C800",
+  //     backgroundColor: "#FFF0D0",
+  //     colorDisc: "#FFCB57",
+  //     borderColor: "#F7C800",
+  //     tag: "Gia đình",
+  //   },
+  //   {
+  //     colorText: "#FF8080",
+  //     backgroundColor: "#FFE4E4",
+  //     colorDisc: "#F594A9",
+  //     borderColor: "#F594A9",
+  //     tag: "Tình yêu",
+  //   },
+  //   {
+  //     colorText: "#87A173",
+  //     backgroundColor: "#E0F8DD",
+  //     colorDisc: "#87A173",
+  //     borderColor: "#87A173",
+  //     tag: "Bạn bè",
+  //   },
+  //   {
+  //     colorText: "#97AEDF",
+  //     backgroundColor: "#E4F4FF",
+  //     colorDisc: "#97AEDF",
+  //     borderColor: "#97AEDF",
+  //     tag: "Công việc",
+  //   },
+  //   {
+  //     colorText: "#66B4B9",
+  //     backgroundColor: "#D7F5F7",
+  //     colorDisc: "#66B4B9",
+  //     borderColor: "#66B4B9",
+  //     tag: "Tâm trạng",
+  //   },
+  //   {
+  //     colorText: "#BC2525",
+  //     backgroundColor: "#FFE4E4",
+  //     colorDisc: "#BC2525",
+  //     borderColor: "#BC2525",
+  //     tag: "nsfw",
+  //   },
+  //   {
+  //     colorText: "#7D7D7D",
+  //     backgroundColor: "#E9E9E9",
+  //     colorDisc: "#7D7D7D",
+  //     borderColor: "#7D7D7D",
+  //     tag: "Khác",
+  //   },
+  // ];
+
+  const tagsData = useSelector(tagsSelector);
+
+  const [tagsList, setTagsList] = useState([]);
+
+  useMemo(() => {
+    setTagsList(tagsData);
+  }, [tagsData]);
 
   return (
     <div className="frame-main-page">
@@ -80,7 +97,7 @@ const FrameMainPage = () => {
             <div className="filter-tags">
               <h3 className="title">Chủ đề bài viết</h3>
               <ul className="tag-list">
-                {tagList.map((tag) => (
+                {tagsList.map((tag) => (
                   <li
                     style={{
                       backgroundColor: tag.backgroundColor,
