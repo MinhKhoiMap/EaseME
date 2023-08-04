@@ -3,6 +3,11 @@
   --color-pink-text: #ff8080;
 }
 
+::selection {
+  background-color: #f39f95;
+  color: #fff;
+}
+
 html,
 input,
 input::placeholder {

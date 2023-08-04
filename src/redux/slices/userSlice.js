@@ -8,9 +8,12 @@ const userSlice = createSlice({
       console.log(action.payload, "retrieve user");
       return action.payload;
     },
+    updateUser: (_, action) => {
+      return action.payload;
+    },
   },
 });
 
-export const { retrieveUser } = userSlice.actions;
+export const { retrieveUser, updateUser } = userSlice.actions;
 
 export default userSlice.reducer;

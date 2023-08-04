@@ -1,17 +1,28 @@
-import "./TopNavBar.css";
-
+// Import libraries
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-import logo from "../../assets/images/logo-original.svg";
+// Import redux utilities
+import { userAvatarSelector } from "../../redux/selectors/userSelector";
+
+// Import components
 import {
-  AccountIcon,
+  AccountIconDefault,
   BookIcon,
   CaretDownIcon,
   HeartIcon,
 } from "../Icons/Icons";
 
+// Import styles
+import "./TopNavBar.css";
+
+// Import images
+import logo from "../../assets/images/logo-original.svg";
+
 const TopNavBar = () => {
+  const userAvatar = useSelector(userAvatarSelector);
+
   const [showMenu, setShowMenu] = useState(false);
 
   const topNavRef = useRef();
@@ -65,8 +76,12 @@ const TopNavBar = () => {
         </ul>
         <div className="account-manage">
           <span className="avatar">
-            <Link to="/profile">
-              <AccountIcon color="#87A273" />
+            <Link to="/page/profile">
+              {userAvatar ? (
+                <img src={userAvatar} alt="user avatar" />
+              ) : (
+                <AccountIconDefault color="#87A273" />
+              )}
             </Link>
           </span>
           <span
@@ -86,7 +101,7 @@ const TopNavBar = () => {
             }}
           >
             <Link
-              to="page/profile"
+              to="/page/profile"
               onClick={(e) => {
                 setShowMenu(false);
               }}

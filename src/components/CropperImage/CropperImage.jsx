@@ -37,10 +37,10 @@ const CropperImage = ({
         croppedAreaPixels,
         rotation
       );
-      console.log(file, blob, "vcl");
+      // console.log(file, blob, "vcl");
       return { croppedFile: file, blob };
     } catch (e) {
-      console.log(e);
+      console.log(e, "error at cropping image");
     }
   };
 

@@ -7,11 +7,12 @@ import defautlAva from "../../assets/images/avatar-default.png";
 const Post = ({
   id_post,
   avaURL = defautlAva,
-  username,
+  username = "Người dùng ẩn danh",
   privacyIcon,
   content,
   date,
   tag,
+  reactNum,
   isReact = false,
   isDoctor = false,
   changeReactFunc,
@@ -50,7 +51,15 @@ const Post = ({
                 <img src={auth_tick} alt="tick" title="Chứng thực chuyên gia" />
               )}
             </div>
-            <div className="privacy">{privacyIcon}</div>
+            <div className="privacy">
+              {String(privacyIcon).toLowerCase() === "private" ? (
+                <i className="fa-solid fa-lock"></i>
+              ) : String(privacyIcon).toLowerCase() === "public" ? (
+                <i className="fa-solid fa-earth-asia"></i>
+              ) : (
+                <i className="fa-solid fa-stethoscope"></i>
+              )}
+            </div>
           </div>
           <div className="show-func-menu">
             <div
@@ -162,7 +171,7 @@ const Post = ({
                 </svg>
               )}
             </span>
-            <span className="number">8</span>
+            <span className="number">{reactNum}</span>
           </div>
           <div className="post-date">{date}</div>
           <div

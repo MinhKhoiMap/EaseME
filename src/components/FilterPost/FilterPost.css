@@ -1,0 +1,21 @@
+.filter-post {
+  margin: 15px 0;
+}
+
+.filter-post__container {
+  padding: 0 20px;
+  display: flex;
+  gap: 16px;
+}
+
+.filter-post__container .field-filter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-post__container .field-filter label {
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: #87a173;
+}

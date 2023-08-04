@@ -5,7 +5,7 @@ import tagsReducer from "./slices/tagSlice";
 
 const store = configureStore({
   reducer: {
-    postsList: postsListReducer,
+    myPostsList: postsListReducer,
     userProfile: userProfileReducer,
     tags: tagsReducer,
   },

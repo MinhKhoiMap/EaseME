@@ -109,7 +109,7 @@ export const BookIcon = ({
   );
 };
 
-export const AccountIcon = ({ w = 37, h = 38, color = "#000" }) => {
+export const AccountIconDefault = ({ w = 38, h = 38, color = "#000" }) => {
   return (
     <svg width={w} height={h} viewBox="0 0 37 38" fill="none">
       <g clipPath="url(#clip0_355_2349)">

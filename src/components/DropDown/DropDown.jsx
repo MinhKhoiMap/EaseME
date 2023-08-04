@@ -13,8 +13,6 @@ const DropDown = ({
   const [selectedColor, setSelectedColor] = useState(defaultColor);
   const [iconJSX, setIconJSX] = useState(null);
 
-  console.log(listItem, "listItem");
-
   function resetState() {
     setSelectedColor(defaultColor);
     setIconJSX(null);
@@ -22,6 +20,7 @@ const DropDown = ({
 
   useEffect(() => {
     if (!selected) resetState();
+    else setSelectedColor(selected.colorText);
   }, [selected]);
 
   return (
@@ -78,8 +77,7 @@ const DropDown = ({
                 setIconJSX(item?.icon);
                 setShowList(false);
               }}
-              data-value={item._id}
-              key={item._id ? item._id : item.tag}
+              key={item._id || item.tag}
             >
               {item.tag}
             </div>

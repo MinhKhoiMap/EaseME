@@ -24,7 +24,7 @@ class UserServiceClass {
   }
 
   updateProfile(newProfile, user_token) {
-    return http.patch(`/${this.route_url}/update-profile`, newProfile, {
+    return http.put(`/${this.route_url}/update-profile`, newProfile, {
       headers: { authorization: user_token },
     });
   }

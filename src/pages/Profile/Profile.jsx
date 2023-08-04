@@ -1,8 +1,7 @@
 // Import libraries
-import { useEffect, useMemo, useState } from "react";
-import "./Profile.css";
-import { useSelector } from "react-redux";
-import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useQuery, useMutation } from "@tanstack/react-query";
 
 // Import utilities
 import PostService from "../../services/post.service";
@@ -10,11 +9,22 @@ import UserService from "../../services/user.service";
 import { calcTime } from "../../utils/utils";
 
 // Import redux utilities
+import { updateUser } from "../../redux/slices/userSlice";
 import { userProfileSelector } from "../../redux/selectors/userSelector";
+import { getMyPostList } from "../../redux/selectors/postSelector";
+import {
+  retrievePostsList,
+  removePost,
+} from "../../redux/slices/postsListSlice";
 
-// Import components
+// Import styles
+import "./Profile.css";
+
+// Import images
 import wall from "../../assets/images/avatarTest.png";
 import ava from "../../assets/images/wallpaper.jpg";
+
+// Import components
 import MessageComp from "../../components/MessageComp/Message";
 import PostFrame from "../../components/PostFrame/PostFrame";
 import CropperImage from "../../components/CropperImage/CropperImage";
@@ -22,12 +32,15 @@ import Post from "../../components/Post/Post";
 import Loader from "../../components/Loader/Loader";
 
 const token_test =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoiNjRhOTgzOTU1YTEyZTgyMDliZTEzNDk1IiwiaWF0IjoxNjg4ODMyNTEwfQ.udvfx_bFvQFffxeVoMhwQKMhUjXOcoY_0TorTGBwyqU";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoiNjRhNmQ2Y2ZhMzkyMmQ1ZDQ3Y2NkNDY4IiwiaWF0IjoxNjkwNzY4NDc5fQ.nk0gDmaSiKEqROe90V0ceiA7Ioef7dqXviHWy4S9gEo";
 
+/* Functional Component */
 const Profile = () => {
+  const dispatch = useDispatch();
   const userProfile = useSelector(userProfileSelector);
+  const myPostList = useSelector(getMyPostList);
 
-  const [myPostList, setMyPostList] = useState([]);
+  // const [myPostList, setMyPostList] = useState([]);
 
   const [showCropImageModal, setShowCropImageModal] = useState(false);
   const [imgSizeX, setImgSizeX] = useState(0);
@@ -40,11 +53,11 @@ const Profile = () => {
   const [photoURL, setPhotoURL] = useState(""); // Photo URL
   const [fieldCropper, setFieldCropper] = useState("");
 
-  const [editUsername, setEditUsername] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
   const [isReactUser, setIsReactUser] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  useMemo(() => {
+  useEffect(() => {
     setUsernameEdit(userProfile.name);
   }, [userProfile]);
 
@@ -59,9 +72,43 @@ const Profile = () => {
     cacheTime: calcTime("15m"),
   });
 
+  const updateProfileMutation = useMutation({
+    mutationFn: (data) => {
+      setIsLoading(true);
+      return UserService.updateProfile(data, token_test);
+    },
+  });
+
+  const updateImageMutation = useMutation({
+    mutationFn: ({ filesForm, fieldCropper }) => {
+      setIsLoading(true);
+      return UserService.uploadFile(filesForm, fieldCropper, token_test);
+    },
+  });
+
+  const deletePostMutation = useMutation({
+    mutationFn: (postID) => {
+      setIsLoading(true);
+      return PostService.deletePost(postID, token_test);
+    },
+  });
+
+  function updateProfile(data) {
+    updateProfileMutation.mutate(data, {
+      onSuccess: (response) => {
+        // console.log(response, "mutation updated");
+        dispatch(updateUser(response.data.profile));
+        setIsEditMode(false);
+      },
+      onSettled: () => {
+        setIsLoading(false);
+      },
+    });
+  }
+
   function cancelEditName() {
     setUsernameEdit(userProfile.name);
-    setEditUsername(false);
+    setIsEditMode(false);
   }
 
   function cleanUpAfterUpload() {
@@ -101,53 +148,41 @@ const Profile = () => {
     const filesForm = new FormData();
     filesForm.append("originImage", file);
     filesForm.append("croppedImage", croppedImageFile);
-
-    setIsLoading(true);
-
-    UserService.uploadFile(filesForm, fieldCropper, token_test)
-      .then((response) => {
-        console.log("first", response);
-        setFile(null);
-        setPhotoURL(null);
-        setShowCropImageModal(false);
-      })
-      .then(() => {
-        cleanUpAfterUpload();
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    updateImageMutation.mutate(
+      { filesForm, fieldCropper },
+      {
+        onSettled: () => setIsLoading(false),
+        onSuccess: (response) => {
+          // console.log(response);
+          dispatch(updateUser(response.data.profile));
+          cleanUpAfterUpload();
+          setShowCropImageModal(false);
+        },
+      }
+    );
   }
 
-  function deletePost(e) {
-    console.log([e]);
-    setIsLoading(true);
-    PostService.deletePost(e, token_test)
-      .then((response) => {
-        console.log(response);
-        return response.data;
-      })
-      .then(({ postDeleted }) => {
-        // console.log(postDeleted, "vvvv");
-        setMyPostList(
-          (prev) => prev && prev.filter((post) => post._id !== postDeleted._id)
-        );
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+  function deletePost(id_post) {
+    // console.log(id_post);
+    deletePostMutation.mutate(id_post, {
+      onSettled: () => setIsLoading(false),
+      onSuccess: () => {
+        dispatch(removePost(id_post));
+      },
+    });
   }
 
   useEffect(() => {
     if (myPostQuery.isSuccess) {
-      setMyPostList(myPostQuery.data.data.posts);
+      console.log(myPostQuery.data.data.posts, ":v");
+      dispatch(retrievePostsList(myPostQuery.data.data.posts));
     } else if (myPostQuery.isError) {
       console.log(myPostQuery.error);
     }
 
     if (!myPostQuery.isLoading) setIsLoading(false);
   }, [myPostQuery.fetchStatus]);
-  
+
   /* ************ Render JSX ************ */
   return (
     <div className="profile-page">
@@ -194,7 +229,7 @@ const Profile = () => {
           </div>
           <div className="account-info">
             <div className="username">
-              {editUsername ? (
+              {isEditMode ? (
                 <span>
                   <input
                     autoFocus={true}
@@ -220,32 +255,29 @@ const Profile = () => {
                   </button>
                 </span>
               ) : (
-                <h3>{usernameEdit}</h3>
+                <h3>{userProfile?.name}</h3>
               )}
-              <button
-                className="change-name-btn"
-                onClick={() => setEditUsername((prev) => !prev)}
-              >
-                {!editUsername ? (
-                  <i className="fa-regular fa-pen-to-square"></i>
-                ) : (
+              {isEditMode ? (
+                <button
+                  className="update-name-btn"
+                  onClick={() => {
+                    updateProfile({ name: usernameEdit });
+                  }}
+                >
                   <i className="fa-solid fa-check"></i>
-                )}
-              </button>
+                </button>
+              ) : (
+                <button
+                  className="change-name-btn"
+                  onClick={() => setIsEditMode((prev) => !prev)}
+                >
+                  <i className="fa-regular fa-pen-to-square"></i>
+                </button>
+              )}
             </div>
             <p className="join-date">
               Tham gia EaseMe từ:
-              <span style={{ marginLeft: "6px" }}>
-                {userProfile.join_date
-                  ? new Date(userProfile.join_date).getDate() +
-                    "/" +
-                    (new Date(userProfile.join_date).getMonth() + 1) +
-                    "/" +
-                    new Date(userProfile.join_date).getFullYear()
-                  : <i className="fa-solid fa-infinity"></i> /
-                    <i className="fa-solid fa-infinity"></i> /
-                    <i className="fa-solid fa-infinity"></i>}
-              </span>
+              <span style={{ marginLeft: "6px" }}>{userProfile.join_date}</span>
             </p>
           </div>
         </div>
@@ -264,21 +296,14 @@ const Profile = () => {
                   key={post._id}
                   username={userProfile.name}
                   avaURL={userProfile.avatar_url}
-                  privacyIcon={
-                    String(post.privacy).toLowerCase() === "private" ? (
-                      <i className="fa-solid fa-lock"></i>
-                    ) : String(post.privacy).toLowerCase() === "public" ? (
-                      <i className="fa-solid fa-earth-asia"></i>
-                    ) : (
-                      <i className="fa-solid fa-stethoscope"></i>
-                    )
-                  }
+                  privacyIcon={post.privacy}
                   content={post.content}
                   tag={post.tag}
                   isReact={isReactUser}
+                  reactNum={post.reaction_number}
                   isDoctor={userProfile.role === "psychologists"}
                   changeReactFunc={setIsReactUser}
-                  date={new Date().toLocaleString()}
+                  date={post.postDate}
                   menuItemsList={[
                     {
                       icon: (

@@ -1,24 +1,39 @@
-// import CSS
+// Import libraries
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+
+// Import utilities
+import UserService from "../../services/user.service";
+
+// Import redux utilities
+import { retrieveUser } from "../../redux/slices/userSlice";
+
+// Import CSS
 import "./Login.css";
 
 // Import components
 import InputGroup from "../../components/InputGroup/InputGroup";
 import Button from "../../components/Button/Button";
 
-// Import Tools
-import { useState } from "react";
-// import { Link } from "react-router-dom";
-
 // Import Images
 import grid from "../../assets/images/backgrounds/GridBg.png";
 
 const Login = () => {
+  const dispatch = useDispatch();
+
   const [usernameInp, setUsernameInp] = useState("");
   const [passwordInp, setPasswordInp] = useState("");
 
-  //
   const [showPassword, setShowPassword] = useState(false);
   const [googleHoverColor, setGoogleHoverColor] = useState("#87A273");
+
+  function handleLogin(e) {
+    e.preventDefault();
+    console.log(":v");
+    UserService.login(usernameInp, passwordInp).then((response) => {
+      console.log(response, " vcl");
+    });
+  }
 
   return (
     <div
@@ -30,11 +45,11 @@ const Login = () => {
       </div>
       <div className="login-page__main">
         <div className="login-page__login-section">
-          <form id="form-login">
+          <form id="form-login" onSubmit={handleLogin}>
             <div className="login-page__login-feature">
               <InputGroup
                 text="Tên người dùng"
-                placeholderText="Nhập username"
+                placeholderText="Nhập tên đăng nhập"
                 required={true}
                 target="login-username"
                 borderRadius={15}
@@ -45,7 +60,7 @@ const Login = () => {
             <div className="login-page__login-feature login-page__login-feature--password">
               <InputGroup
                 text="Mật khẩu"
-                placeholderText="Mật khẩu"
+                placeholderText="Nhập mật khẩu"
                 required={true}
                 target="login-password"
                 borderRadius={15}
@@ -55,8 +70,8 @@ const Login = () => {
               />
               <span
                 className="login-page__show-password"
-                onMouseEnter={() => setShowPassword(true)}
-                onMouseLeave={() => setShowPassword(false)}
+                onMouseDown={() => setShowPassword(true)}
+                onMouseUp={() => setShowPassword(false)}
               >
                 <svg width="24" height="21" viewBox="0 0 24 21" fill="none">
                   <path

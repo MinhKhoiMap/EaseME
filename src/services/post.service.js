@@ -11,8 +11,10 @@ class PostServiceClass {
   }
 
   /*------------------ Posts Tools --------------------*/
-  getAllPosts() {
-    return http.get(`/${this.post_route_url}/all-posts`);
+  getAllPosts(user_token) {
+    return http.get(`/${this.post_route_url}/all-posts`, {
+      headers: { authorization: user_token },
+    });
   }
 
   getPostByID(id_post) {
@@ -25,8 +27,12 @@ class PostServiceClass {
     });
   }
 
-  getAllPostsWithTag(id_tag) {
-    return http.get(`/${this.post_route_url}/tag/${id_tag}`);
+  getAllPostsWithTag(id_tag, user_token) {
+    return http.get(`/${this.post_route_url}/tag/${id_tag}`, {
+      headers: {
+        authorization: user_token,
+      },
+    });
   }
 
   createPost(post, user_token) {

@@ -1,9 +1,14 @@
 // Import libraries
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useQuery } from "@tanstack/react-query";
+import { useDispatch, useSelector } from "react-redux";
+
+// Import services
+import postService from "../../services/post.service";
 
 // Import redux utilities
+import { retrieveTags } from "../../redux/slices/tagSlice";
 import { tagsSelector } from "../../redux/selectors/tagSelector";
 
 // Import styles
@@ -11,6 +16,8 @@ import "./MainPageLayout.css";
 
 // Import components
 import NotePage from "../NotePage/NotePage";
+import Loader from "../Loader/Loader";
+import TopNavBar from "../TopNavBar/TopNavBar";
 
 const FrameMainPage = () => {
   // const tagList = [
@@ -65,19 +72,44 @@ const FrameMainPage = () => {
   //   },
   // ];
 
+  const dispatch = useDispatch();
   const tagsData = useSelector(tagsSelector);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const [tagsList, setTagsList] = useState([]);
+
+  const tagsQuery = useQuery({
+    queryKey: ["tags"],
+    queryFn: () => {
+      setIsLoading(true);
+      return postService.getTags();
+    },
+    refetchOnWindowFocus: false,
+  });
 
   useMemo(() => {
     setTagsList(tagsData);
   }, [tagsData]);
 
+  useEffect(() => {
+    if (!tagsQuery.isLoading) {
+      setIsLoading(false);
+    }
+    if (tagsQuery.isSuccess) {
+      dispatch(retrieveTags(tagsQuery.data.data.tags));
+      // setTagsList(tagsQuery.data.data.tags);
+    }
+  }, [tagsQuery.fetchStatus]);
+
   return (
     <div className="frame-main-page">
+      <TopNavBar />
       <div className="frame-main-page__container">
         <div className="left-section">
-          <NotePage />
+          <div className="note-motivation">
+            <NotePage />
+          </div>
         </div>
         <div className="center-section">
           <Outlet />
@@ -103,13 +135,15 @@ const FrameMainPage = () => {
                       backgroundColor: tag.backgroundColor,
                       borderColor: tag.borderColor,
                     }}
-                    key={tag.tag}
+                    key={tag._id}
                   >
-                    <i
-                      className="fa-solid fa-circle"
-                      style={{ color: tag.colorDisc }}
-                    ></i>
-                    <span style={{ color: tag.colorText }}>{tag.tag}</span>
+                    <Link to={`/page/community/${tag._id}`}>
+                      <i
+                        className="fa-solid fa-circle"
+                        style={{ color: tag.colorDisc }}
+                      ></i>
+                      <span style={{ color: tag.colorText }}>{tag.tag}</span>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -139,6 +173,8 @@ const FrameMainPage = () => {
           </div>
         </div>
       </div>
+
+      {isLoading && <Loader />}
     </div>
   );
 };

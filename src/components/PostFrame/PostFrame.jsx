@@ -1,25 +1,28 @@
 // Import libraries
-import { useEffect, useRef, useState, useMemo } from "react";
-import "./PostFrame.css";
+import { useEffect, useRef, useState } from "react";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 // Import services
 import PostService from "../../services/post.service";
 
 // Import redux utilities
-import { retrieveTags } from "../../redux/slices/tagSlice";
 import { tagsSelector } from "../../redux/selectors/tagSelector";
 
 // Import components
 import DropDown from "../DropDown/DropDown";
 import Loader from "../Loader/Loader";
 
+// Import styles
+import "./PostFrame.css";
+import "react-quill/dist/quill.snow.css";
+
 // Import utilities
 import defaultAva from "../../assets/images/avatar-default.png";
 
+const token_test =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoiNjRhNmQ2Y2ZhMzkyMmQ1ZDQ3Y2NkNDY4IiwiaWF0IjoxNjkwNzY4NDc5fQ.nk0gDmaSiKEqROe90V0ceiA7Ioef7dqXviHWy4S9gEo";
 const modules = {
   toolbar: [
     [{ header: 2 }],
@@ -77,7 +80,8 @@ const PostFrame = ({ avaURL, contentPost = "", setContentPost }) => {
   //     tag: "Khác",
   //   },
   // ];
-  const dispatch = useDispatch();
+
+  const queryClient = useQueryClient();
   const tagsData = useSelector(tagsSelector);
 
   const quillReact = useRef();
@@ -91,75 +95,59 @@ const PostFrame = ({ avaURL, contentPost = "", setContentPost }) => {
   const [tagsSelected, setTagsSelected] = useState(null);
   const [privacy, setPrivacy] = useState(null);
 
-  const tagsQuery = useQuery({
-    queryKey: ["tags"],
-    queryFn: () => {
-      setIsLoading(true);
-      return PostService.getTags();
-    },
-    refetchOnWindowFocus: false,
-  });
-
-  useMemo(() => {
+  useEffect(() => {
     setTagsList(tagsData);
   }, [tagsData]);
 
   function resetState() {
     setTextEdit("");
     setEditMode(false);
-    setIsDisabledButton(true);
     setPrivacy(null);
     setTagsSelected(null);
   }
 
-  function postStory(e) {
-    // e.preventDefault();
-    setContentPost(textEdit);
-    if (tagsSelected && tagsSelected._id && privacy) {
+  const postStoryMutation = useMutation({
+    mutationFn: () => {
+      console.log("first time mutation");
       setIsLoading(true);
-      PostService.createPost(
+      return PostService.createPost(
         {
           content: textEdit,
           tag: tagsSelected._id,
           privacy:
-            String(privacy.tag).toLowerCase() === "chỉ mình tôi"
+            String(privacy.tag).toLocaleLowerCase() === "chỉ mình tôi"
               ? "Private"
-              : String(privacy.tag).toLowerCase() === "công khai"
+              : String(privacy.tag).toLocaleLowerCase() === "công khai"
               ? "Public"
               : "Only Psychologists",
           reaction_number: 0,
           deleted: false,
         },
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoiNjRhOTgzOTU1YTEyZTgyMDliZTEzNDk1IiwiaWF0IjoxNjg4ODMyNTEwfQ.udvfx_bFvQFffxeVoMhwQKMhUjXOcoY_0TorTGBwyqU"
-      )
-        .then((response) => {
-          console.log(response, "response post story");
-          window.location.reload();
-        })
-        .catch((err) => {
-          alert(err + "error post story");
-        })
-        .finally(() => {
+        token_test
+      );
+    },
+  });
+
+  function postStory(e) {
+    e.preventDefault();
+    setContentPost(textEdit);
+    if (tagsSelected && tagsSelected._id && privacy) {
+      postStoryMutation.mutate(undefined, {
+        onSuccess: (response) => {
+          // console.log(response, " mutations ");
+          queryClient.invalidateQueries({ queryKey: ["postsList"] });
           resetState();
-        });
+        },
+        onSettled: () => {
+          setIsLoading(false);
+        },
+      });
     } else {
       alert("You are not allowed to access this action");
     }
-    // console.log({ post: contentPost, tags: tagsSelected, privacy: privacy });
   }
 
-  // Monitor query
-  useEffect(() => {
-    if (!tagsQuery.isLoading) {
-      setIsLoading(false);
-    }
-    if (tagsQuery.isSuccess) {
-      dispatch(retrieveTags(tagsQuery.data.data.tags));
-      // setTagsList(tagsQuery.data.data.tags);
-    }
-  }, [tagsQuery.fetchStatus]);
-
-  // Check trigger submit button
+  // Trigger submit button
   useEffect(() => {
     const quill = quillReact.current.getEditor();
     // console.log(quill.getLength());

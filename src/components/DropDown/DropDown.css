@@ -23,7 +23,7 @@
   display: inline-flex;
   align-items: center;
   position: relative;
-  z-index: 999;
+  z-index: 99;
 }
 
 .drop-down__button .drop-down__icon i {

@@ -1,7 +1,3 @@
-:root {
-  --primary: #ff8080;
-}
-
 .loader {
   position: fixed;
   top: 0;
@@ -39,7 +35,7 @@
   color: #87a173;
   font-weight: 800;
   font-style: italic;
-  font-family: Fz-Billie-Endria;
+  font-family: Fz-Billie-Endria, Be Vietnam Pro;
   position: relative;
   left: calc(var(--size) * 1px * -3);
   text-shadow: 10px 10px 10px #ccc;
