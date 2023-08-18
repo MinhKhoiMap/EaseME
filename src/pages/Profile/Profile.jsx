@@ -1,6 +1,7 @@
 // Import libraries
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation } from "@tanstack/react-query";
 
 // Import utilities
@@ -21,8 +22,6 @@ import {
 import "./Profile.css";
 
 // Import images
-import wall from "../../assets/images/avatarTest.png";
-import ava from "../../assets/images/wallpaper.jpg";
 
 // Import components
 import MessageComp from "../../components/MessageComp/Message";
@@ -30,13 +29,15 @@ import PostFrame from "../../components/PostFrame/PostFrame";
 import CropperImage from "../../components/CropperImage/CropperImage";
 import Post from "../../components/Post/Post";
 import Loader from "../../components/Loader/Loader";
+import ShowImageModal from "../../components/ShowImageModal/ShowImageModal";
 
-const token_test =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoiNjRhNmQ2Y2ZhMzkyMmQ1ZDQ3Y2NkNDY4IiwiaWF0IjoxNjkwNzY4NDc5fQ.nk0gDmaSiKEqROe90V0ceiA7Ioef7dqXviHWy4S9gEo";
+// const token_test =
+//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoiNjRhNmQ2Y2ZhMzkyMmQ1ZDQ3Y2NkNDY4IiwiaWF0IjoxNjkwNzY4NDc5fQ.nk0gDmaSiKEqROe90V0ceiA7Ioef7dqXviHWy4S9gEo";
 
 /* Functional Component */
 const Profile = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const userProfile = useSelector(userProfileSelector);
   const myPostList = useSelector(getMyPostList);
 
@@ -52,10 +53,11 @@ const Profile = () => {
   const [file, setFile] = useState(undefined); // Image Origin
   const [photoURL, setPhotoURL] = useState(""); // Photo URL
   const [fieldCropper, setFieldCropper] = useState("");
+  const [imageModalSrc, setImageModalSrc] = useState("");
 
   const [isEditMode, setIsEditMode] = useState(false);
-  const [isReactUser, setIsReactUser] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isShowImageModal, setIsShowImageModal] = useState(false);
 
   useEffect(() => {
     setUsernameEdit(userProfile.name);
@@ -65,7 +67,7 @@ const Profile = () => {
     queryKey: ["postsList", "my-posts"],
     queryFn: () => {
       setIsLoading(true);
-      return PostService.getUserPosts(token_test);
+      return PostService.getUserPosts(localStorage.getItem("access_token"));
     },
     refetchOnWindowFocus: false,
     staleTime: calcTime("10m"),
@@ -75,21 +77,31 @@ const Profile = () => {
   const updateProfileMutation = useMutation({
     mutationFn: (data) => {
       setIsLoading(true);
-      return UserService.updateProfile(data, token_test);
+      return UserService.updateProfile(
+        data,
+        localStorage.getItem("access_token")
+      );
     },
   });
 
   const updateImageMutation = useMutation({
     mutationFn: ({ filesForm, fieldCropper }) => {
       setIsLoading(true);
-      return UserService.uploadFile(filesForm, fieldCropper, token_test);
+      return UserService.uploadFile(
+        filesForm,
+        fieldCropper,
+        localStorage.getItem("access_token")
+      );
     },
   });
 
   const deletePostMutation = useMutation({
     mutationFn: (postID) => {
       setIsLoading(true);
-      return PostService.deletePost(postID, token_test);
+      return PostService.deletePost(
+        postID,
+        localStorage.getItem("access_token")
+      );
     },
   });
 
@@ -139,7 +151,7 @@ const Profile = () => {
     setPhotoURL(e.target.files[0] && URL.createObjectURL(e.target.files[0]));
     setImgSizeX(156);
     setImgSizeY(156);
-    setShapeImage("");
+    setShapeImage("round");
     setTitleCropper("Cập nhật ảnh đại diện");
     setShowCropImageModal(true);
   }
@@ -147,7 +159,7 @@ const Profile = () => {
   function saveCroppedImage(croppedImageFile) {
     const filesForm = new FormData();
     filesForm.append("originImage", file);
-    filesForm.append("croppedImage", croppedImageFile);
+    filesForm.append("croppedImage", croppedImageFile.croppedFile);
     updateImageMutation.mutate(
       { filesForm, fieldCropper },
       {
@@ -172,9 +184,14 @@ const Profile = () => {
     });
   }
 
+  function openImageModal(src) {
+    setImageModalSrc(src);
+    setIsShowImageModal(true);
+  }
+
   useEffect(() => {
     if (myPostQuery.isSuccess) {
-      console.log(myPostQuery.data.data.posts, ":v");
+      // console.log(myPostQuery.data.data.posts, ":v");
       dispatch(retrievePostsList(myPostQuery.data.data.posts));
     } else if (myPostQuery.isError) {
       console.log(myPostQuery.error);
@@ -182,6 +199,10 @@ const Profile = () => {
 
     if (!myPostQuery.isLoading) setIsLoading(false);
   }, [myPostQuery.fetchStatus]);
+
+  useEffect(() => {
+    if (!localStorage.getItem("access_token")) navigate("/");
+  }, [localStorage.getItem("access_token")]);
 
   /* ************ Render JSX ************ */
   return (
@@ -192,11 +213,8 @@ const Profile = () => {
             <div
               className="wallpaper"
               style={{ backgroundImage: `url(${userProfile.wallpaper_url})` }}
-            >
-              {/* <div className="show-wallpaper__modal">
-                <img src={userProfile.wallpaper_full_url} alt="wallpaper" />
-              </div> */}
-            </div>
+              onClick={() => openImageModal(userProfile.wallpaper_full_url)}
+            ></div>
             <div className="edit-wallpaper">
               <input
                 type="file"
@@ -214,6 +232,7 @@ const Profile = () => {
             <div
               className="avatar"
               style={{ backgroundImage: `url(${userProfile.avatar_url})` }}
+              onClick={() => openImageModal(userProfile.avatar_full_url)}
             ></div>
             <div className="edit-avatar">
               <input
@@ -299,10 +318,9 @@ const Profile = () => {
                   privacyIcon={post.privacy}
                   content={post.content}
                   tag={post.tag}
-                  isReact={isReactUser}
+                  isReact={post.isReacted}
                   reactNum={post.reaction_number}
                   isDoctor={userProfile.role === "psychologists"}
-                  changeReactFunc={setIsReactUser}
                   date={post.postDate}
                   menuItemsList={[
                     {
@@ -330,6 +348,11 @@ const Profile = () => {
                 />
               );
             })}
+          {myPostList && myPostList.length < 1 && (
+            <p className="alternate-message">
+              Bạn hiện không có bài viết nào cả.
+            </p>
+          )}
         </div>
       </div>
 
@@ -345,6 +368,14 @@ const Profile = () => {
           }}
           saveCroppedImgFunc={saveCroppedImage}
           title={titleCropper}
+        />
+      )}
+      {isShowImageModal && (
+        <ShowImageModal
+          // src={userProfile.wallpaper_full_url}
+          src={imageModalSrc}
+          alt="wallpaper-full"
+          closeModalFunc={() => setIsShowImageModal(false)}
         />
       )}
 

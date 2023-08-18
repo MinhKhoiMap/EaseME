@@ -13,23 +13,22 @@ import { retrieveUser } from "./redux/slices/userSlice";
 // Import styles
 import "./App.css";
 
+// Import images
+import mobile_message from "./assets/images/mobile-message.png";
+
 // Import components
-import TopNavBar from "./components/TopNavBar/TopNavBar";
 import Login from "./pages/Login/Login";
 import Survey from "./pages/Survey/Survey";
-import Book from "./components/Book/Book";
+import Book from "./pages/Book/Book";
 import MainPageLayout from "./components/MainPageLayout/MainPageLayout";
 import Profile from "./pages/Profile/Profile";
 import Loader from "./components/Loader/Loader";
 import Community from "./pages/Community/Community";
+import AboutProject from "./pages/AboutProject/AboutProject";
+import Register from "./pages/Register/Register";
 
-// Test
-import av from "./assets/images/avatarTest.png";
-import av1 from "./assets/images/wallpaper.jpg";
-import TestComp from "./components/TestComp/TestComp";
-
-const token_test =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoiNjRhNmQ2Y2ZhMzkyMmQ1ZDQ3Y2NkNDY4IiwiaWF0IjoxNjkwNzY4NDc5fQ.nk0gDmaSiKEqROe90V0ceiA7Ioef7dqXviHWy4S9gEo";
+// const token_test =
+//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoiNjRhNmQ2Y2ZhMzkyMmQ1ZDQ3Y2NkNDY4IiwiaWF0IjoxNjkwNzY4NDc5fQ.nk0gDmaSiKEqROe90V0ceiA7Ioef7dqXviHWy4S9gEo";
 
 function App() {
   const dispatch = useDispatch();
@@ -40,9 +39,10 @@ function App() {
     queryKey: ["user"],
     queryFn: () => {
       setShowLoader(true);
-      return userService.loginWithToken(token_test);
+      return userService.loginWithToken(localStorage.getItem("access_token"));
     },
     refetchOnWindowFocus: false,
+    enabled: !!localStorage.getItem("access_token"),
   });
 
   useEffect(() => {
@@ -58,17 +58,25 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="" element={<MainPageLayout />}></Route>
+        <Route path="aboutEaseMe" element={<AboutProject />}></Route>
         <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
         <Route path="survey" element={<Survey />} />
-        <Route path="book" element={<Book pageContentArr={[]} />} />
-        <Route path="page" element={<MainPageLayout />}>
+        <Route path="my-book" element={<Book />} />
+        <Route path="" element={<MainPageLayout />}>
           <Route path="profile" exact element={<Profile />} />
           <Route path="community/:id_tag" element={<Community />} />
           <Route path="community" element={<Community />} />
         </Route>
       </Routes>
       {showLoader && <Loader />}
+      <div id="device-message">
+        <img src={mobile_message} alt="device notice" />
+        <p>
+          Hiện tại chúng mình chưa hỗ trợ trên thiết bị di động. Vui lòng sử
+          dụng máy tính để có trải nghiệm tốt nhất!
+        </p>
+      </div>
     </div>
   );
 }

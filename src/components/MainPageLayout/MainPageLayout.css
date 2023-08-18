@@ -191,5 +191,6 @@
 }
 
 .frame-main-page__container .center-section {
+  padding-bottom: 160px;
   width: calc(100% - 378px - 320px);
 }

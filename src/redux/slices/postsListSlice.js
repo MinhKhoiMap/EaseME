@@ -5,7 +5,7 @@ const postsSlice = createSlice({
   initialState: [],
   reducers: {
     retrievePostsList: (_, action) => {
-      console.log(action.payload, "retrievePostsList action");
+      // console.log(action.payload, "retrievePostsList action");
       return action.payload;
     },
     addPost: (postsList, action) => {

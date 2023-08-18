@@ -179,10 +179,19 @@
 }
 
 .post__container .post__footer .reaction .number {
-  /* margin-left: 4px; */
+  margin-left: 2px;
+  width: 55px;
   font-size: 1.4rem;
   font-weight: 500;
   color: #87a173;
+  letter-spacing: 1px;
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+
+.post__container .post__footer .reaction .number i {
+  font-size: 1.2rem;
 }
 
 .post__container .post__footer .post-date {

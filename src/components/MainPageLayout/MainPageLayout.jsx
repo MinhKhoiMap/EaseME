@@ -1,5 +1,5 @@
 // Import libraries
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,58 +20,6 @@ import Loader from "../Loader/Loader";
 import TopNavBar from "../TopNavBar/TopNavBar";
 
 const FrameMainPage = () => {
-  // const tagList = [
-  //   {
-  //     colorText: "#F7C800",
-  //     backgroundColor: "#FFF0D0",
-  //     colorDisc: "#FFCB57",
-  //     borderColor: "#F7C800",
-  //     tag: "Gia đình",
-  //   },
-  //   {
-  //     colorText: "#FF8080",
-  //     backgroundColor: "#FFE4E4",
-  //     colorDisc: "#F594A9",
-  //     borderColor: "#F594A9",
-  //     tag: "Tình yêu",
-  //   },
-  //   {
-  //     colorText: "#87A173",
-  //     backgroundColor: "#E0F8DD",
-  //     colorDisc: "#87A173",
-  //     borderColor: "#87A173",
-  //     tag: "Bạn bè",
-  //   },
-  //   {
-  //     colorText: "#97AEDF",
-  //     backgroundColor: "#E4F4FF",
-  //     colorDisc: "#97AEDF",
-  //     borderColor: "#97AEDF",
-  //     tag: "Công việc",
-  //   },
-  //   {
-  //     colorText: "#66B4B9",
-  //     backgroundColor: "#D7F5F7",
-  //     colorDisc: "#66B4B9",
-  //     borderColor: "#66B4B9",
-  //     tag: "Tâm trạng",
-  //   },
-  //   {
-  //     colorText: "#BC2525",
-  //     backgroundColor: "#FFE4E4",
-  //     colorDisc: "#BC2525",
-  //     borderColor: "#BC2525",
-  //     tag: "nsfw",
-  //   },
-  //   {
-  //     colorText: "#7D7D7D",
-  //     backgroundColor: "#E9E9E9",
-  //     colorDisc: "#7D7D7D",
-  //     borderColor: "#7D7D7D",
-  //     tag: "Khác",
-  //   },
-  // ];
-
   const dispatch = useDispatch();
   const tagsData = useSelector(tagsSelector);
 
@@ -88,7 +36,7 @@ const FrameMainPage = () => {
     refetchOnWindowFocus: false,
   });
 
-  useMemo(() => {
+  useEffect(() => {
     setTagsList(tagsData);
   }, [tagsData]);
 
@@ -98,7 +46,6 @@ const FrameMainPage = () => {
     }
     if (tagsQuery.isSuccess) {
       dispatch(retrieveTags(tagsQuery.data.data.tags));
-      // setTagsList(tagsQuery.data.data.tags);
     }
   }, [tagsQuery.fetchStatus]);
 
@@ -137,7 +84,7 @@ const FrameMainPage = () => {
                     }}
                     key={tag._id}
                   >
-                    <Link to={`/page/community/${tag._id}`}>
+                    <Link to={`/community/${tag._id}`}>
                       <i
                         className="fa-solid fa-circle"
                         style={{ color: tag.colorDisc }}

@@ -203,9 +203,10 @@ const CropperImage = ({
             className="complete-btn"
             props={{
               onClick: async () => {
-                const { croppedFile, blob } = await getResultCroppedImg();
-                console.log(croppedFile, "vai");
-                saveCroppedImgFunc(croppedFile);
+                // const { croppedFile, blob } = await getResultCroppedImg();
+                const croppedImageObject = await getResultCroppedImg();
+                // console.log(croppedFile, "vai");
+                saveCroppedImgFunc(croppedImageObject);
                 // setPhotoURL(url);
               },
             }}

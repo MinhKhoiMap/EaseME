@@ -1,6 +1,6 @@
 // Import libraries
-import { useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
 // Import redux utilities
@@ -26,9 +26,9 @@ const FilterPost = ({ author, setAuthor, authorItemList }) => {
   }, [id_tag, tagsList]);
 
   function handleNavigate(tag) {
-    navigate(`/page/community/${tag._id}`);
+    navigate(`/community/${tag._id}`);
   }
-  console.log(selectedTag, "selected");
+  // console.log(selectedTag, "selected");
 
   return (
     <div className="filter-post">
@@ -50,7 +50,7 @@ const FilterPost = ({ author, setAuthor, authorItemList }) => {
             <DropDown
               label="Chủ đề"
               selected={selectedTag}
-              listItem={[...tagsList, { _id: "", tag: "Tất cả" }]}
+              listItem={[{ _id: "", tag: "Tất cả" }, ...tagsList]}
               setSelected={handleNavigate}
             />
           </div>

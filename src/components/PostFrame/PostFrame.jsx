@@ -21,8 +21,9 @@ import "react-quill/dist/quill.snow.css";
 // Import utilities
 import defaultAva from "../../assets/images/avatar-default.png";
 
-const token_test =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoiNjRhNmQ2Y2ZhMzkyMmQ1ZDQ3Y2NkNDY4IiwiaWF0IjoxNjkwNzY4NDc5fQ.nk0gDmaSiKEqROe90V0ceiA7Ioef7dqXviHWy4S9gEo";
+// const token_test =
+//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoiNjRhNmQ2Y2ZhMzkyMmQ1ZDQ3Y2NkNDY4IiwiaWF0IjoxNjkwNzY4NDc5fQ.nk0gDmaSiKEqROe90V0ceiA7Ioef7dqXviHWy4S9gEo";
+
 const modules = {
   toolbar: [
     [{ header: 2 }],
@@ -36,51 +37,6 @@ const modules = {
 
 // Functional Components
 const PostFrame = ({ avaURL, contentPost = "", setContentPost }) => {
-  // const tagList = [
-  //   {
-  //     colorText: "#F7C800",
-  //     backgroundColor: "#FFF0D0",
-  //     colorDisc: "#FFCB57",
-  //     tag: "Gia đình",
-  //   },
-  //   {
-  //     colorText: "#FF8080",
-  //     backgroundColor: "#FFE4E4",
-  //     colorDisc: "#F594A9",
-  //     tag: "Tình yêu",
-  //   },
-  //   {
-  //     colorText: "#87A173",
-  //     backgroundColor: "#E0F8DD",
-  //     colorDisc: "#87A173",
-  //     tag: "Bạn bè",
-  //   },
-  //   {
-  //     colorText: "#97AEDF",
-  //     backgroundColor: "#E4F4FF",
-  //     colorDisc: "#97AEDF",
-  //     tag: "Công việc",
-  //   },
-  //   {
-  //     colorText: "#66B4B9",
-  //     backgroundColor: "#D7F5F7",
-  //     colorDisc: "#66B4B9",
-  //     tag: "Tâm trạng",
-  //   },
-  //   {
-  //     colorText: "#BC2525",
-  //     backgroundColor: "#FFE4E4",
-  //     colorDisc: "#BC2525",
-  //     tag: "nsfw",
-  //   },
-  //   {
-  //     colorText: "#7D7D7D",
-  //     backgroundColor: "#E9E9E9",
-  //     colorDisc: "#7D7D7D",
-  //     tag: "Khác",
-  //   },
-  // ];
-
   const queryClient = useQueryClient();
   const tagsData = useSelector(tagsSelector);
 
@@ -109,10 +65,13 @@ const PostFrame = ({ avaURL, contentPost = "", setContentPost }) => {
   const postStoryMutation = useMutation({
     mutationFn: () => {
       console.log("first time mutation");
+      const quill = quillReact.current.getEditor();
+      console.log(quill.getContents(), ";V");
       setIsLoading(true);
       return PostService.createPost(
         {
           content: textEdit,
+          contentText: quill.getText(),
           tag: tagsSelected._id,
           privacy:
             String(privacy.tag).toLocaleLowerCase() === "chỉ mình tôi"
@@ -123,7 +82,7 @@ const PostFrame = ({ avaURL, contentPost = "", setContentPost }) => {
           reaction_number: 0,
           deleted: false,
         },
-        token_test
+        localStorage.getItem("access_token")
       );
     },
   });

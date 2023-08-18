@@ -10,7 +10,7 @@ class PostServiceClass {
     return http.get("/api/tags/all");
   }
 
-  /*------------------ Posts Tools --------------------*/
+  /*------------------ Posts Services --------------------*/
   getAllPosts(user_token) {
     return http.get(`/${this.post_route_url}/all-posts`, {
       headers: { authorization: user_token },
@@ -53,7 +53,14 @@ class PostServiceClass {
     });
   }
 
-  /*------------------ Comments Tools --------------------*/
+  /*------------------ Like Services --------------------*/
+  likePost(id_post, user_token) {
+    return http.put(`${this.post_route_url}/like-post/${id_post}`, undefined, {
+      headers: { authorization: user_token },
+    });
+  }
+
+  /*------------------ Comments Services --------------------*/
   getPostComments(id_post) {
     return http.get(`/${this.comment_route_url}/${id_post}`);
   }

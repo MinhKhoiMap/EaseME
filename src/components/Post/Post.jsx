@@ -1,8 +1,22 @@
+// Import libraries
 import { useEffect, useRef, useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+// Import services
+import PostServices from "../../services/post.service";
+
+// Import styles
 import "./Post.css";
 
+// Import image
 import auth_tick from "../../assets/images/auth-tick.png";
 import defautlAva from "../../assets/images/avatar-default.png";
+
+// Import components
+import Loader from "../Loader/Loader";
+
+// const token_test =
+//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoiNjRhNmQ2Y2ZhMzkyMmQ1ZDQ3Y2NkNDY4IiwiaWF0IjoxNjkwNzY4NDc5fQ.nk0gDmaSiKEqROe90V0ceiA7Ioef7dqXviHWy4S9gEo";
 
 const Post = ({
   id_post,
@@ -15,14 +29,40 @@ const Post = ({
   reactNum,
   isReact = false,
   isDoctor = false,
-  changeReactFunc,
   menuItemsList = [],
 }) => {
   const contentHTML = useRef();
+  const queryClient = useQueryClient();
+
+  // console.log("first", id_post);
 
   const [isReadLess, setIsReadLess] = useState(false);
   const [showReadOptsButton, setShowReadOptsButton] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const likePostMutation = useMutation({
+    mutationFn: (id_post) => {
+      // setIsLoading(true);
+      return PostServices.likePost(
+        id_post,
+        localStorage.getItem("access_token")
+      );
+    },
+  });
+
+  function handleReaction() {
+    likePostMutation.mutate(id_post, {
+      onSuccess: (response) => {
+        queryClient.invalidateQueries({
+          queryKey: ["postsList"],
+        });
+      },
+      onSettled: () => {
+        setIsLoading(false);
+      },
+    });
+  }
 
   useEffect(() => {
     // console.log(
@@ -136,12 +176,7 @@ const Post = ({
         </div>
         <footer className="post__footer">
           <div className="reaction">
-            <span
-              className="icon"
-              onClick={() => {
-                changeReactFunc((prev) => !prev);
-              }}
-            >
+            <span className="icon" onClick={handleReaction}>
               {isReact ? (
                 <svg width="26" height="30" viewBox="0 0 26 30" fill="none">
                   <path
@@ -171,7 +206,18 @@ const Post = ({
                 </svg>
               )}
             </span>
-            <span className="number">{reactNum}</span>
+            <span className="number">
+              {reactNum > 999
+                ? `${
+                    reactNum % 1000 > 99
+                      ? (reactNum / 1000).toFixed(1)
+                      : (reactNum / 1000).toFixed(0)
+                  }K`
+                : reactNum}
+              {reactNum > 999 && (reactNum % 1000) % 100 !== 0 && (
+                <i className="fa-solid fa-plus"></i>
+              )}
+            </span>
           </div>
           <div className="post-date">{date}</div>
           <div
@@ -190,6 +236,7 @@ const Post = ({
           </div>
         </footer>
       </div>
+      {isLoading && <Loader />}
     </div>
   );
 };

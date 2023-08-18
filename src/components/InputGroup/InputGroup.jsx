@@ -9,6 +9,7 @@ const InputGroup = ({
   borderRadius = 0,
   value,
   setValue,
+  nameField,
 }) => {
   const handleChangeValue = (e) => {
     setValue(e.target.value);
@@ -16,7 +17,7 @@ const InputGroup = ({
 
   return (
     <div className="input-group__wrapper">
-      <label className="input-group__label" for={target}>
+      <label className="input-group__label" htmlFor={target}>
         {text}
         <span>{required && "*"}</span>
       </label>
@@ -31,6 +32,7 @@ const InputGroup = ({
           placeholder={placeholderText}
           value={value}
           onChange={handleChangeValue}
+          name={nameField && nameField}
         />
       </div>
     </div>

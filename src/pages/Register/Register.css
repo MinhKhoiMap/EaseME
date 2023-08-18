@@ -1,0 +1,132 @@
+.register-page__wrapper {
+  padding-top: 60px;
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-position: top center;
+  background-size: contain;
+}
+
+.register-page__wrapper .logo__wrapper {
+  position: fixed;
+  top: 16px;
+  left: 20px;
+}
+
+.register-page__main {
+  z-index: 9999;
+}
+
+.register-page__header-title {
+  font-family: "iCiel Supa Mega Fantastic";
+  font-size: 11rem;
+  font-weight: lighter;
+  line-height: 119px;
+  color: var(--color-green-label);
+  margin-bottom: 55px;
+}
+
+.register-page__register-section {
+  margin-top: -19.5px;
+}
+
+.register-page__field-group {
+  /* max-width: calc(343px * 2 + 10px); */
+  display: flex;
+  gap: 10px;
+}
+
+.register-page__field-input {
+  --height-input-register: 50px;
+  margin-top: 19.5px;
+}
+
+.register-page__field-input label {
+  color: var(--color-pink-text);
+  font-size: 1.7rem;
+  line-height: 22px;
+}
+
+.register-page__field-input span {
+  color: #bc2525;
+}
+
+.register-page__field-input input {
+  width: 343px;
+  height: var(--height-input-register);
+  font-size: 1.6rem;
+  background: linear-gradient(
+    101.46deg,
+    rgba(255, 255, 255, 0.7) 18.95%,
+    rgba(255, 255, 255, 0.4) 74.93%
+  );
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.15);
+  border: 2px solid #87a273;
+  color: #87a173;
+}
+
+.register-page__field-input input::placeholder {
+  color: #87a273;
+  font-weight: 100;
+  line-height: 17px;
+}
+
+.register-page__register-btn-wrap {
+  margin-top: 27.5px;
+  margin-bottom: 27px;
+  display: flex;
+  justify-content: center;
+}
+
+.register-page__register-btn-wrap button {
+  width: fit-content;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 30px;
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.15);
+  color: #ffffff;
+  background-color: #87a273;
+  border: none;
+}
+
+.register-page__register-btn-wrap button[disabled] {
+  background: linear-gradient(
+    155deg,
+    rgba(199, 199, 199, 0.7) 0%,
+    rgba(185, 185, 185, 0.4) 100%
+  );
+  border-color: rgba(33, 33, 33, 0.4);
+  color: #212121;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.register-page__upload-avatar {
+  margin-top: 20px;
+}
+
+.register-page__upload-avatar > input[type="file"] {
+  display: none;
+}
+
+.register-page__upload-avatar > label {
+  width: 156px;
+  height: 156px;
+  display: block;
+  background-color: #ccc;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-position: center;
+  background-size: contain;
+}
+
+.register-page__upload-avatar > label i {
+  font-size: 2.5rem;
+  opacity: 0.4;
+}

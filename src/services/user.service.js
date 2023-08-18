@@ -20,7 +20,11 @@ class UserServiceClass {
   }
 
   createUser(profile) {
-    return http.post(`/${this.route_url}/create-user`, profile);
+    return http.post(`/${this.route_url}/create-user`, profile, {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+    });
   }
 
   updateProfile(newProfile, user_token) {

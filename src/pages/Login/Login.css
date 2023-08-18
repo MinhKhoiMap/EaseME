@@ -10,6 +10,12 @@
   background-size: contain;
 }
 
+.login-page__wrapper .logo__wrapper {
+  position: fixed;
+  top: 16px;
+  left: 20px;
+}
+
 .login-page__main {
   z-index: 9999;
 }
@@ -165,4 +171,20 @@
 
 .login-page__options-btn:hover {
   background-color: #87a273;
+}
+
+.login-page__wrapper #form-login .error-label {
+  margin-top: 16px;
+  height: 20px;
+  color: #ef2531;
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+
+.login-page__wrapper #form-login .error-label i {
+  margin-right: 4px;
+}
+
+.login-page__login-feature.login-page__login-feature--error input {
+  border-color: #ef2531;
 }

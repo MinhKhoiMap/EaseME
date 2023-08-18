@@ -1,6 +1,8 @@
 // Import libraries
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate, Link } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
 
 // Import utilities
 import UserService from "../../services/user.service";
@@ -12,27 +14,60 @@ import { retrieveUser } from "../../redux/slices/userSlice";
 import "./Login.css";
 
 // Import components
+import Loader from "../../components/Loader/Loader";
 import InputGroup from "../../components/InputGroup/InputGroup";
 import Button from "../../components/Button/Button";
 
 // Import Images
 import grid from "../../assets/images/backgrounds/GridBg.png";
+import logo from "../../assets/images/logo-original.svg";
 
 const Login = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [usernameInp, setUsernameInp] = useState("");
   const [passwordInp, setPasswordInp] = useState("");
+  const [errorText, setErrorText] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
   const [googleHoverColor, setGoogleHoverColor] = useState("#87A273");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isPasswordError, setIsPasswordError] = useState(false);
+  const [isUsernameError, setIsUsernameError] = useState(false);
+
+  const loginMutation = useMutation({
+    mutationFn: ({ username, password }) => {
+      setIsLoading(true);
+      return UserService.login(username, password);
+    },
+  });
 
   function handleLogin(e) {
     e.preventDefault();
-    console.log(":v");
-    UserService.login(usernameInp, passwordInp).then((response) => {
-      console.log(response, " vcl");
-    });
+    loginMutation.mutate(
+      { username: usernameInp, password: passwordInp },
+      {
+        onSuccess: (response) => {
+          // console.log(response, "token");
+          localStorage.setItem("access_token", response.data.access_token);
+          dispatch(retrieveUser(response.data.user_profile));
+          navigate("/profile");
+        },
+        onError: (err) => {
+          if (err.response.status === 401) {
+            setIsPasswordError(true);
+            setErrorText("Sai mật khẩu");
+          } else if (err.response.status === 404) {
+            setIsUsernameError(true);
+            setErrorText("Tên đăng nhập không tồn tại.");
+          }
+        },
+        onSettled: () => {
+          setIsLoading(false);
+        },
+      }
+    );
   }
 
   return (
@@ -40,15 +75,26 @@ const Login = () => {
       className="login-page__wrapper"
       style={{ backgroundImage: `url(${grid})` }}
     >
+      <div className="logo__wrapper">
+        <Link to="/">
+          <figure className="logo">
+            <img src={logo} alt="EaseMe" title="EaseMe" />
+          </figure>
+        </Link>
+      </div>
       <div className="login-page__header">
         <h2 className="login-page__header-title">Đăng nhập</h2>
       </div>
       <div className="login-page__main">
         <div className="login-page__login-section">
           <form id="form-login" onSubmit={handleLogin}>
-            <div className="login-page__login-feature">
+            <div
+              className={`login-page__login-feature ${
+                isUsernameError && "login-page__login-feature--error"
+              }`}
+            >
               <InputGroup
-                text="Tên người dùng"
+                text="Tên đăng nhập"
                 placeholderText="Nhập tên đăng nhập"
                 required={true}
                 target="login-username"
@@ -57,7 +103,11 @@ const Login = () => {
                 setValue={setUsernameInp}
               />
             </div>
-            <div className="login-page__login-feature login-page__login-feature--password">
+            <div
+              className={`login-page__login-feature login-page__login-feature--password login-page__login-feature ${
+                isPasswordError && "login-page__login-feature--error"
+              }`}
+            >
               <InputGroup
                 text="Mật khẩu"
                 placeholderText="Nhập mật khẩu"
@@ -81,6 +131,12 @@ const Login = () => {
                 </svg>
               </span>
             </div>
+            {errorText && (
+              <div className="error-label">
+                <i className="fa-solid fa-circle-exclamation"></i>
+                {errorText}
+              </div>
+            )}
             <a href="/" className="login-page__forget-password">
               Bạn quên mật khẩu?
             </a>
@@ -90,7 +146,7 @@ const Login = () => {
           </form>
           <div className="separate-section">hoặc</div>
           <div className="login-page__login-options">
-            <a
+            {/* <a
               href="https://www.facebook.com/khoimapp/"
               className="login-page__options-btn"
               onMouseEnter={() => setGoogleHoverColor("#fff")}
@@ -135,7 +191,7 @@ const Login = () => {
                   />
                 </defs>
               </svg>
-            </a>
+            </a> */}
           </div>
         </div>
       </div>
@@ -143,6 +199,7 @@ const Login = () => {
         <span>Chưa có tài khoản?</span>
         <a href="/register">Tạo tài khoản</a>
       </div>
+      {isLoading && <Loader />}
     </div>
   );
 };

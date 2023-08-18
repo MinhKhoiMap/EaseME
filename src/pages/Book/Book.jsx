@@ -1,19 +1,54 @@
+// Import libraries
+import { useState, useRef, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useQuery } from "@tanstack/react-query";
+
+// Import services
+import PostService from "../../services/post.service";
+
+// Import redux services
+import { userNameSelector } from "../../redux/selectors/userSelector";
+
+// Import styles
 import "./Book.css";
 
-import { useState, useRef, useEffect } from "react";
-
+// Import images
 import pin from "../../assets/images/book/pin.png";
+import TopNavBar from "../../components/TopNavBar/TopNavBar";
 
-const Book = ({ pageContentArr = [], nameOfUser = "Phạm Minh Khôi" }) => {
-  const numOfPage = pageContentArr.length + 2; // number of pages except the first cover and the last one
-  console.log(numOfPage);
+// const token_test =
+//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoiNjRhNmQ2Y2ZhMzkyMmQ1ZDQ3Y2NkNDY4IiwiaWF0IjoxNjkwNzY4NDc5fQ.nk0gDmaSiKEqROe90V0ceiA7Ioef7dqXviHWy4S9gEo";
 
-  // Ref
+/* Functional Component */
+const Book = () => {
+  const nameSelector = useSelector(userNameSelector);
+
+  // book Ref
   const bookWrap = useRef();
   // State
   const [currentPage, setCurrentPage] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
   const [isEnd, setIsEnd] = useState(false);
+  const [pageContentArr, setPageContentArr] = useState([]);
+
+  const bookContentQuery = useQuery({
+    queryKey: ["my-book"],
+    queryFn: () => {
+      return PostService.getUserPosts(localStorage.getItem("access_token"));
+    },
+    onSuccess: (response) => {
+      // console.log(
+      //   String(response.data.posts[0].postDate).substring(
+      //     String(response.data.posts[0].postDate).search(",") + 1,
+      //     String(response.data.posts[0].postDate).length
+      //   )
+      // );
+      setPageContentArr(response.data.posts);
+    },
+  });
+
+  const numOfPage = pageContentArr.length + 2; // number of pages includes the first cover and the last one
+  // console.log(numOfPage);
 
   function goPrevPage() {
     if (currentPage > 1) {
@@ -80,28 +115,34 @@ const Book = ({ pageContentArr = [], nameOfUser = "Phạm Minh Khôi" }) => {
                 <div className="content__body">
                   <p>
                     <span style={{ fontSize: "5rem" }}>
-                      {pageContentArr[i].content[0]}
+                      {pageContentArr[i].contentText[0]}
                     </span>
-                    {pageContentArr[i].content.substring(
+                    {pageContentArr[i].contentText.substring(
                       1,
-                      pageContentArr[i].content.length
+                      pageContentArr[i].contentText.length
                     )}
                   </p>
                 </div>
                 <div className="content__footer">
-                  <p>{pageContentArr[i].date}</p>
+                  <p>{i === 0 && pageContentArr[i].postDate}</p>
                 </div>
               </div>
             </div>
             <div className="book__paper-back">
               <div className="content">
                 <div className="content__body">
-                  <p>
-                    {/* {isEnd && "Hãy viết tiếp nên câu chuyện của mình bạn nhé!"} */}
+                  <p
+                    style={{
+                      fontSize: isEnd && "3.5rem",
+                      fontWeight: "500",
+                      fontStyle: "italic",
+                    }}
+                  >
+                    {isEnd && "Hãy viết tiếp nên câu chuyện của mình bạn nhé!"}
                   </p>
                 </div>
                 <div className="content__footer">
-                  {/* <p>{pageContentArr[i + 1]?.date}</p> */}
+                  <p>{pageContentArr[i + 1]?.postDate}</p>
                 </div>
               </div>
             </div>
@@ -109,7 +150,6 @@ const Book = ({ pageContentArr = [], nameOfUser = "Phạm Minh Khôi" }) => {
         );
         page++;
       }
-    } else {
     }
     return pageList;
   }
@@ -122,8 +162,10 @@ const Book = ({ pageContentArr = [], nameOfUser = "Phạm Minh Khôi" }) => {
     }
   }, [currentPage, numOfPage]);
 
+  /* ************ Render JSX ************ */
   return (
     <div className="book">
+      <TopNavBar />
       <div className="book__wrapper">
         <div
           className="book-section"
@@ -138,7 +180,7 @@ const Book = ({ pageContentArr = [], nameOfUser = "Phạm Minh Khôi" }) => {
               <div className="content">
                 <p className="label">Hành trình của</p>
                 <p className="name">
-                  {nameOfUser ? nameOfUser : "....................."}
+                  {nameSelector || "....................."}
                 </p>
               </div>
             </div>
@@ -173,8 +215,9 @@ const Book = ({ pageContentArr = [], nameOfUser = "Phạm Minh Khôi" }) => {
               trẻ bên trong bản thân cậu.
             </p>
             <p className="message">
-              Hãy cùng chúng mình xem thử trong thời gian qua, cậu đã chia sẻ
-              những gì cùng EaseMe nhé!
+              {nameSelector
+                ? "Hãy cùng chúng mình xem thử trong thời gian qua, cậu đã chia sẻ những gì cùng EaseMe nhé!"
+                : "Hãy đăng nhập để xem hoặc ghi tiếp những chặng đường của bạn nhé!"}
             </p>
           </div>
         </div>

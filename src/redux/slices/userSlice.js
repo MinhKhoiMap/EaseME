@@ -5,7 +5,7 @@ const userSlice = createSlice({
   initialState: {},
   reducers: {
     retrieveUser: (_, action) => {
-      console.log(action.payload, "retrieve user");
+      // console.log(action.payload, "retrieve user");
       return action.payload;
     },
     updateUser: (_, action) => {

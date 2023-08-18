@@ -99,6 +99,7 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  background-color: #e3e3e3;
 }
 
 .profile-page__wrapper .avatar-setting .avatar-wrapper {
@@ -217,4 +218,13 @@
   font-size: 1.4rem;
   line-height: 18px;
   color: #000;
+}
+
+.profile-page__wrapper .my-post .alternate-message {
+  margin-top: 28px;
+  width: 100%;
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: #7d7d7d;
 }
